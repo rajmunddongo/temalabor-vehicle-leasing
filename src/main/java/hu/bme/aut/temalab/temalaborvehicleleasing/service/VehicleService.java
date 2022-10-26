@@ -1,34 +1,41 @@
 package hu.bme.aut.temalab.temalaborvehicleleasing.service;
 
 import hu.bme.aut.temalab.temalaborvehicleleasing.model.Vehicle;
+import hu.bme.aut.temalab.temalaborvehicleleasing.model.enums.VehicleType;
 import hu.bme.aut.temalab.temalaborvehicleleasing.repository.VehicleRepository;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
-import java.util.List;
-
+@Service
+@RequiredArgsConstructor
 public class VehicleService {
-    private VehicleRepository vehicleRepository;
+    private final VehicleRepository vehicleRepository;
 
-    public double calcAverageSeats(String type){
-        List<Vehicle> foundVehicles = vehicleRepository.findByType(type);
-        int seats=0;
-        int counter=0;
-        for( Vehicle vehicle : foundVehicles){
-            seats+=vehicle.getSeats();
-            counter++;
-        }
-        double calc = seats/counter;
-        return calc;
+    /**
+     * Calculate average seats for a given type
+     *
+     * @param type {@link VehicleType}
+     * @return average
+     */
+    public double averageSeatsOfVehicleType(@NonNull VehicleType type) {
+        return vehicleRepository.findByVehicleType(type).stream()
+                .mapToInt(Vehicle::getSeats)
+                .average()
+                .orElse(0);
     }
-    public double calcMileageLimit(String type){
-        List<Vehicle> foundVehicles = vehicleRepository.findByType(type);
-        int mileage=0;
-        int counter=0;
-        for( Vehicle vehicle : foundVehicles){
-            mileage+=vehicle.getMileageLimit();
-            counter++;
-        }
-        double calc = mileage/counter;
-        return calc;
+
+    /**
+     * Calculate average mileage of vehicle type
+     *
+     * @param type {@link VehicleType}
+     * @return average
+     */
+    public double averageMileageLimitOfVehicleType(@NonNull VehicleType type) {
+        return vehicleRepository.findByVehicleType(type).stream()
+                .mapToInt(Vehicle::getMileageLimit)
+                .average()
+                .orElse(0);
     }
 
 }

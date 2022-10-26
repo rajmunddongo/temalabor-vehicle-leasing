@@ -1,0 +1,7 @@
+spring:
+  datasource:
+    url: jdbc:tc:postgresql:///
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: on
