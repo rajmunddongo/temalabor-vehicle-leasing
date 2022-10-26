@@ -1,7 +1,6 @@
 package hu.bme.aut.temalab.temalaborvehicleleasing.model;
 
 import hu.bme.aut.temalab.temalaborvehicleleasing.model.enums.CarBodyTypes;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

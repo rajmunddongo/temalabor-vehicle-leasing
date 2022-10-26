@@ -52,4 +52,5 @@ public abstract class Vehicle {
 
     @Column(columnDefinition = "TEXT")
     String description;
+
 }
