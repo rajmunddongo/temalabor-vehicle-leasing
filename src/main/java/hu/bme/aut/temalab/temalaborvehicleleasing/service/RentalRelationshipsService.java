@@ -56,7 +56,6 @@ public final class RentalRelationshipsService {
 
     /**
      * Calculates the total kilometers traveled by a customer
-     *
      * @param customer Customer data
      * @return total kilometers
      */
