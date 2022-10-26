@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class TemalaborVehicleLeasingApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(TemalaborVehicleLeasingApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(TemalaborVehicleLeasingApplication.class, args);
+    }
 
 }

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -21,9 +22,11 @@ public final class Rental {
     UUID id;
 
     @ManyToOne(optional = false)
+    @Cascade(org.hibernate.annotations.CascadeType.LOCK)
     Vehicle vehicle;
 
     @ManyToOne(optional = false)
+    @Cascade(org.hibernate.annotations.CascadeType.LOCK)
     Customer customer;
 
     @Column(nullable = false)
