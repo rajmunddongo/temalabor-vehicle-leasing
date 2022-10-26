@@ -1,44 +1,51 @@
 package hu.bme.aut.temalab.temalaborvehicleleasing.service;
 
-import hu.bme.aut.temalab.temalaborvehicleleasing.model.RentalRelationships;
-import hu.bme.aut.temalab.temalaborvehicleleasing.repository.RentalRelationshipsRepository;
+import hu.bme.aut.temalab.temalaborvehicleleasing.model.Customer;
+import hu.bme.aut.temalab.temalaborvehicleleasing.model.Rental;
+import hu.bme.aut.temalab.temalaborvehicleleasing.model.Vehicle;
+import hu.bme.aut.temalab.temalaborvehicleleasing.repository.RentalRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-public class RentalRelationshipsService {
-    private RentalRelationshipsRepository rentalRelationshipsRepository;
+@Service
+@RequiredArgsConstructor
+public final class RentalRelationshipsService {
+    private final RentalRepository rentalRelationshipsRepository;
 
-    public List<Integer> mostRentalCarsIDList(){
-        List<RentalRelationships> allRental = rentalRelationshipsRepository.getAll();
-        HashMap<Integer, Integer> carMap = new HashMap<>();
-        for (RentalRelationships rent: allRental) {
+    public List<Vehicle> mostRentalCarsIDList() {
+        List<Rental> allRental = rentalRelationshipsRepository.findAll();
+        HashMap<Vehicle, Integer> carMap = new HashMap<>();
+        for (Rental rent : allRental) {
             int piece = 0;
-            if(carMap.get(rent.getVehicleID())!=null){
-                piece = carMap.get(rent.getVehicleID());
+            if (carMap.get(rent.getVehicle()) != null) {
+                piece = carMap.get(rent.getVehicle());
             }
-            carMap.put(rent.getVehicleID(),piece);
+            carMap.put(rent.getVehicle(), piece);
         }
-        List<Map.Entry<Integer,Integer>> list = new LinkedList<>(carMap.entrySet());
+        List<Map.Entry<Vehicle, Integer>> list = new LinkedList<>(carMap.entrySet());
         list.sort(Map.Entry.comparingByValue());
-        List<Integer> mostRentalCarsID = new ArrayList<>();
-        for (Map.Entry<Integer, Integer> map: list) {
+        List<Vehicle> mostRentalCarsID = new ArrayList<>();
+        for (Map.Entry<Vehicle, Integer> map : list) {
             mostRentalCarsID.add(map.getKey());
         }
         return mostRentalCarsID;
     }
 
-    public Integer totalSpending(Integer customerID){
-        List<RentalRelationships> foundRental = rentalRelationshipsRepository.findByCustomerID(customerID);
-        Integer totalSpend =0;
-        for (RentalRelationships rental: foundRental) {
+    public Integer totalSpending(Customer customer) {
+        Collection<Rental> foundRental = rentalRelationshipsRepository.findByCustomer(customer);
+        Integer totalSpend = 0;
+        for (Rental rental : foundRental) {
             totalSpend += rental.getPrice();
         }
         return totalSpend;
     }
-    public Integer totalLengthKm(Integer customerID){
-        List<RentalRelationships> foundRental = rentalRelationshipsRepository.findByCustomerID(customerID);
-        Integer totalKM =0;
-        for (RentalRelationships rental: foundRental) {
+
+    public Integer totalLengthKm(Customer customer) {
+        Collection<Rental> foundRental = rentalRelationshipsRepository.findByCustomer(customer);
+        Integer totalKM = 0;
+        for (Rental rental : foundRental) {
             totalKM += rental.getUseKm();
         }
         return totalKM;

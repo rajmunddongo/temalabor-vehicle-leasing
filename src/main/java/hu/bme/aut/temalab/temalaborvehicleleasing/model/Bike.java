@@ -1,10 +1,15 @@
 package hu.bme.aut.temalab.temalaborvehicleleasing.model;
 
 import hu.bme.aut.temalab.temalaborvehicleleasing.model.enums.BikeStrokeType;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 @Entity
 @NoArgsConstructor
