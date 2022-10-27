@@ -46,12 +46,7 @@ public final class RentalRelationshipsService {
      * @return total spending
      */
     public Integer totalSpending(@NonNull Customer customer) {
-        Collection<Rental> foundRental = rentalRelationshipsRepository.findByCustomer(customer);
-        Integer totalSpend = 0;
-        for (Rental rental : foundRental) {
-            totalSpend += rental.getPrice();
-        }
-        return totalSpend;
+        return rentalRelationshipsRepository.findByCustomer(customer).stream().mapToInt(Rental::getPrice).sum();
     }
 
     /**
@@ -60,11 +55,6 @@ public final class RentalRelationshipsService {
      * @return total kilometers
      */
     public Integer totalLengthKm(@NonNull Customer customer) {
-        Collection<Rental> foundRental = rentalRelationshipsRepository.findByCustomer(customer);
-        Integer totalKM = 0;
-        for (Rental rental : foundRental) {
-            totalKM += rental.getUseKm();
-        }
-        return totalKM;
+        return rentalRelationshipsRepository.findByCustomer(customer).stream().mapToInt(Rental::getUseKm).sum();
     }
 }
