@@ -5,6 +5,7 @@ import hu.bme.aut.temalab.temalaborvehicleleasing.model.Rental;
 import hu.bme.aut.temalab.temalaborvehicleleasing.model.Vehicle;
 import hu.bme.aut.temalab.temalaborvehicleleasing.repository.RentalRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -14,6 +15,11 @@ import java.util.*;
 public final class RentalRelationshipsService {
     private final RentalRepository rentalRelationshipsRepository;
 
+    /**
+     * Calculate most rental Cars
+     *
+     * @return organized list of cars
+     */
     public List<Vehicle> mostRentalCarsIDList() {
         List<Rental> allRental = rentalRelationshipsRepository.findAll();
         HashMap<Vehicle, Integer> carMap = new HashMap<>();
@@ -33,21 +39,22 @@ public final class RentalRelationshipsService {
         return mostRentalCarsID;
     }
 
-    public Integer totalSpending(Customer customer) {
-        Collection<Rental> foundRental = rentalRelationshipsRepository.findByCustomer(customer);
-        Integer totalSpend = 0;
-        for (Rental rental : foundRental) {
-            totalSpend += rental.getPrice();
-        }
-        return totalSpend;
+    /**
+     *Calculates the total spend of a customer
+     *
+     * @param customer Customer data
+     * @return total spending
+     */
+    public Integer totalSpending(@NonNull Customer customer) {
+        return rentalRelationshipsRepository.findByCustomer(customer).stream().mapToInt(Rental::getPrice).sum();
     }
 
-    public Integer totalLengthKm(Customer customer) {
-        Collection<Rental> foundRental = rentalRelationshipsRepository.findByCustomer(customer);
-        Integer totalKM = 0;
-        for (Rental rental : foundRental) {
-            totalKM += rental.getUseKm();
-        }
-        return totalKM;
+    /**
+     * Calculates the total kilometers traveled by a customer
+     * @param customer Customer data
+     * @return total kilometers
+     */
+    public Integer totalLengthKm(@NonNull Customer customer) {
+        return rentalRelationshipsRepository.findByCustomer(customer).stream().mapToInt(Rental::getUseKm).sum();
     }
 }
