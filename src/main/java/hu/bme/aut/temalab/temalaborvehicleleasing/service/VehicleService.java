@@ -49,18 +49,22 @@ public final class VehicleService<vehicles> {
     /**
      * Returns all the mileage traveled, if theres a customer given, gives back the mileage traveled by the customer
      * @param customer optional param
-     * @return
+     * @return mileage traveled
      */
-    public int allMileageTraveled(Customer customer){
+    public int allMileageTraveled(Customer customer){//Customer is NULLABLE!
+        if(customer!=null) return allMileageTraveledByCustomer(customer);
         int allMileageTraveled = 0;
         ArrayList<Vehicle> vehicles = (ArrayList<Vehicle>) vehicleRepository.findAll();
-
         if(customer==null){
             for(Vehicle vehicle :vehicles){
                 allMileageTraveled += vehicle.getMileage();
             }
-            return allMileageTraveled;
         }
+        return allMileageTraveled;
+    }
+    public int allMileageTraveledByCustomer(@NonNull Customer customer){
+        int allMileageTraveled = 0;
+        ArrayList<Vehicle> vehicles = (ArrayList<Vehicle>) vehicleRepository.findAll();
         ArrayList<Rental> rentals =(ArrayList<Rental>) rentalRepository.findByCustomer(customer);
         for(Vehicle vehicle :vehicles){
             for(Rental rental : rentals) {

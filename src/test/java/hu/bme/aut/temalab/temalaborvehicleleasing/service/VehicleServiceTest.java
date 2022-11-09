@@ -34,11 +34,13 @@ class VehicleServiceTest {
     private RentalRepository   rentalRepository;
 
     private Customer customer;
+    private  Car car;
+    private Rental rent;
 
     @BeforeEach
     void setUp() {
         //Creating entities
-        Car car =Car.builder()
+        car =Car.builder()
                 .vehicleType(VehicleType.CAR)
                 .licensePlate("ASD-123")
                 .seats(5)
@@ -63,7 +65,7 @@ class VehicleServiceTest {
         customer = Customer.builder()
                 .rentals(new ArrayList<Rental>())
                 .build();
-        Rental rent = Rental.builder()
+        rent = Rental.builder()
                 .customer(customer)
                 .vehicle(car)
                 .build();
@@ -122,5 +124,9 @@ class VehicleServiceTest {
     @Test
     void mileageTraveledByCustomer(){
         assertEquals(1544+13242,vehicleService.allMileageTraveled(customer));
+    }
+    @Test
+    void rentalRepositoryFindByVehicle(){
+        assertEquals(rent,rentalRepository.findByVehicle(car));
     }
 }
