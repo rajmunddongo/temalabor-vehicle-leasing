@@ -43,6 +43,12 @@ public final class VehicleService<vehicles> {
                 .average()
                 .orElse(0);
     }
+
+    /**
+     * Returns all the mileage traveled, if theres a customer given, gives back the mileage traveled by the customer
+     * @param customer optional param
+     * @return
+     */
     public int allMileageTraveled(Customer customer){
         int allMileageTraveled = 0;
         ArrayList<Vehicle> vehicles = (ArrayList<Vehicle>) vehicleRepository.findAll();
