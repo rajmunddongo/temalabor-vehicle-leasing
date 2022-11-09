@@ -86,4 +86,8 @@ class VehicleServiceTest {
         assertEquals(300, vehicleService.averageMileageLimitOfVehicleType(VehicleType.CAR));
         assertEquals(0, vehicleService.averageMileageLimitOfVehicleType(VehicleType.TRANSPORTER));
     }
+    @Test
+    void allMileageTraveled(){ //TDD
+        assertEquals(1544+13242+1234,vehicleService.allMileageTraveled());
+    }
 }
