@@ -98,6 +98,6 @@ class VehicleServiceTest {
 
     @Test
     void allMileageTraveled(){ //TDD
-        assertEquals(1544+13242+1234,vehicleService.allMileageTraveled());
+        assertEquals(1544+13242+1234,vehicleService.allMileageTraveled(null));
     }
 }
