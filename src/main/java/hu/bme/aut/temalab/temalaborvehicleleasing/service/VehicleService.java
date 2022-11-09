@@ -1,16 +1,22 @@
 package hu.bme.aut.temalab.temalaborvehicleleasing.service;
 
+import hu.bme.aut.temalab.temalaborvehicleleasing.model.Customer;
+import hu.bme.aut.temalab.temalaborvehicleleasing.model.Rental;
 import hu.bme.aut.temalab.temalaborvehicleleasing.model.Vehicle;
 import hu.bme.aut.temalab.temalaborvehicleleasing.model.enums.VehicleType;
+import hu.bme.aut.temalab.temalaborvehicleleasing.repository.RentalRepository;
 import hu.bme.aut.temalab.temalaborvehicleleasing.repository.VehicleRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 @RequiredArgsConstructor
-public final class VehicleService {
+public final class VehicleService<vehicles> {
     private final VehicleRepository vehicleRepository;
+    private final RentalRepository rentalRepository;
 
     /**
      * Calculate average seats for a given type
@@ -37,5 +43,6 @@ public final class VehicleService {
                 .average()
                 .orElse(0);
     }
+
 
 }
