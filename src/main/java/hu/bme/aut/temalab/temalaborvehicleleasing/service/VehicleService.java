@@ -43,6 +43,24 @@ public final class VehicleService<vehicles> {
                 .average()
                 .orElse(0);
     }
+    public int allMileageTraveled(Customer customer){
+        int allMileageTraveled = 0;
+        ArrayList<Vehicle> vehicles = (ArrayList<Vehicle>) vehicleRepository.findAll();
 
+        if(customer==null){
+            for(Vehicle vehicle :vehicles){
+                allMileageTraveled += vehicle.getMileage();
+            }
+            return allMileageTraveled;
+        }
+        ArrayList<Rental> rentals =(ArrayList<Rental>) rentalRepository.findByCustomer(customer);
+        for(Vehicle vehicle :vehicles){
+            for(Rental rental : rentals) {
+                if(rental.getVehicle().equals(vehicle))
+                    allMileageTraveled += vehicle.getMileage();
+            }
+        }
+        return allMileageTraveled;
+    }
 
 }
