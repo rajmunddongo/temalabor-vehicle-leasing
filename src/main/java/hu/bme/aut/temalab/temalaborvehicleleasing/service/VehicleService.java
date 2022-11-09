@@ -18,6 +18,8 @@ public final class VehicleService<vehicles> {
     private final VehicleRepository vehicleRepository;
     private final RentalRepository rentalRepository;
 
+
+
     /**
      * Calculate average seats for a given type
      *
