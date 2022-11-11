@@ -93,9 +93,9 @@ public class CustomerService {
 			Integer[] quantitiesArray = new Integer[quantitiesSet.size()];
 			quantitiesSet.toArray(quantitiesArray);
 			
-			for(int i = quantitiesArray.length; i >= quantitiesArray.length - topHowMany; i--) {
+			for(int i = quantitiesArray.length-1; i > quantitiesArray.length-topHowMany-1; i--) {
 				for(Customer c : allCustomers) {
-					if(numberOfRentals(c) == i) {mostActiveCustomers.add(c);}
+					if(numberOfRentals(c) == quantitiesArray[i]) {mostActiveCustomers.add(c);}
 				}
 			}
 		}
