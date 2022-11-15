@@ -68,7 +68,7 @@ public final class VehicleService<vehicles> {
         ArrayList<Rental> rentals =(ArrayList<Rental>) rentalRepository.findByCustomer(customer);
         for(Vehicle vehicle :vehicles){
             for(Rental rental : rentals) {
-                if(rental.getVehicle().equals(vehicle))
+                if(rental.getVehicle().getId().equals(vehicle.getId()))
                     allMileageTraveled += vehicle.getMileage();
             }
         }

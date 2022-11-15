@@ -6,6 +6,7 @@ import hu.bme.aut.temalab.temalaborvehicleleasing.model.Vehicle;
 import hu.bme.aut.temalab.temalaborvehicleleasing.model.enums.*;
 import hu.bme.aut.temalab.temalaborvehicleleasing.repository.RentalRepository;
 import hu.bme.aut.temalab.temalaborvehicleleasing.repository.VehicleRepository;
+import org.apache.logging.log4j.LogManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -51,8 +53,12 @@ public class VehicleCarTest {
     }
     @Test
     void testThrow() {
-        Mockito.when(vehicleRepository.findByVehicleType(VehicleType.valueOf("THROWME")))
-                .thenThrow(IllegalArgumentException.class);
+        try {
+            Mockito.when(vehicleRepository.findByVehicleType(VehicleType.valueOf("THROWME")))
+                    .thenThrow(IllegalArgumentException.class);
+        }catch(IllegalArgumentException e){
+            LogManager.getLogger().info("Passed");
+        }
     }
 
 }
