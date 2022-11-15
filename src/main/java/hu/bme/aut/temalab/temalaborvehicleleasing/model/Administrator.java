@@ -9,27 +9,20 @@ import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
 import java.util.Collection;
 import java.util.Set;
 
+@Entity
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity
 @SuperBuilder
-public final class Customer extends User {
+public final class Administrator extends User {
     @Column
-    private String drivingLicenceNumber;
-
-    @Column
-    private int bonusPoints;
-
-    @OneToMany
-    private Collection<Rental> rentals;
+    private String employeeNumber;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Set.of(UserRole.ROLE_CUSTOMER);
+        return Set.of(UserRole.ROLE_ADMIN);
     }
 }
