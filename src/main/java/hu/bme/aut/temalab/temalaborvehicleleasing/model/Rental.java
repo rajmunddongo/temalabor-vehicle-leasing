@@ -7,7 +7,7 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @NoArgsConstructor
@@ -21,19 +21,19 @@ public final class Rental {
     @Column(unique = true, nullable = false)
     UUID id;
 
-    @ManyToOne(optional = false)
+    @OneToOne(optional = false)
     @Cascade(org.hibernate.annotations.CascadeType.LOCK)
     Vehicle vehicle;
 
-    @ManyToOne(optional = false)
+    @OneToOne(optional = false)
     @Cascade(org.hibernate.annotations.CascadeType.LOCK)
     Customer customer;
 
     @Column(nullable = false)
-    Date startDate;
+    LocalDate startDate;
 
     @Column(nullable = false)
-    Date endDate;
+    LocalDate endDate;
 
     @Column(nullable = false)
     int price;
