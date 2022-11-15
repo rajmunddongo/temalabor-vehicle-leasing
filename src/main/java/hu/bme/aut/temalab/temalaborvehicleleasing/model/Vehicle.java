@@ -21,36 +21,36 @@ public abstract class Vehicle {
     @Id
     @GeneratedValue
     @Column(unique = true, nullable = false)
-    UUID id;
+    private UUID id;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    VehicleType vehicleType;
+    private VehicleType vehicleType;
 
     @Column(unique = true, nullable = false)
-    String licensePlate;
+    private String licensePlate;
 
     @Column(nullable = false)
-    int seats;
+    private int seats;
 
     @Column(nullable = false)
-    int mileage;
+    private int mileage;
 
     @Column(nullable = false)
-    int mileageLimit;
+    private int mileageLimit;
 
     @Column(nullable = false)
-    int horsePower;
-
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    GearboxType gearBoxType;
+    private int horsePower;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    FuelType fuelType;
+    private GearboxType gearBoxType;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private FuelType fuelType;
 
     @Column(columnDefinition = "TEXT")
-    String description;
+    private String description;
 
 }

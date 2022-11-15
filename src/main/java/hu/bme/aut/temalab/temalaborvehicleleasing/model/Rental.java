@@ -19,25 +19,25 @@ public final class Rental {
     @Id
     @GeneratedValue
     @Column(unique = true, nullable = false)
-    UUID id;
+    private UUID id;
 
     @OneToOne(optional = false)
     @Cascade(org.hibernate.annotations.CascadeType.LOCK)
-    Vehicle vehicle;
+    private Vehicle vehicle;
 
     @OneToOne(optional = false)
     @Cascade(org.hibernate.annotations.CascadeType.LOCK)
-    Customer customer;
+    private Customer customer;
 
     @Column(nullable = false)
-    LocalDate startDate;
+    private LocalDate startDate;
 
     @Column(nullable = false)
-    LocalDate endDate;
+    private LocalDate endDate;
 
     @Column(nullable = false)
-    int price;
+    private int price;
 
     @Column(nullable = false)
-    int useKm;
+    private int useKm;
 }

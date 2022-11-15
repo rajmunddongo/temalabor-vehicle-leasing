@@ -19,5 +19,5 @@ import javax.persistence.Enumerated;
 public final class Car extends Vehicle {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    CarBodyTypes carBodyTypes;
+    private CarBodyTypes carBodyTypes;
 }

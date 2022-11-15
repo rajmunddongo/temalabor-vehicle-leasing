@@ -15,5 +15,5 @@ import javax.persistence.Entity;
 @SuperBuilder
 public final class Transporter extends Vehicle {
     @Column(nullable = false)
-    int maximumWeightToCarry;
+    private int maximumWeightToCarry;
 }
