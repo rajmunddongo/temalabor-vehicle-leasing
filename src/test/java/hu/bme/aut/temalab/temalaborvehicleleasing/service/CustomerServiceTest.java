@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -314,10 +315,22 @@ class CustomerServiceTest {
 	
 	@Test
 	void findMostActiveCustomersTest() {		
+		
+		//Invalid parameter test
 		assertEquals(null, customerService.findMostActiveCustomers(-1));
 		assertEquals(null, customerService.findMostActiveCustomers(6));
-		assertEquals(1, customerService.findMostActiveCustomers(1).size());
-		assertEquals(3, customerService.findMostActiveCustomers(2).size());
+		
+		List<Customer> mostActiveCustomers = List.copyOf(customerService.findMostActiveCustomers(1));
+		
+		assertEquals(1, mostActiveCustomers.size());
+		assertEquals(3, rentalRepository.findByCustomer(mostActiveCustomers.get(0)).size());
+		
+		mostActiveCustomers = List.copyOf(customerService.findMostActiveCustomers(2));
+		
+		assertEquals(3, mostActiveCustomers.size());
+		assertEquals(3, rentalRepository.findByCustomer(mostActiveCustomers.get(0)).size());
+		assertEquals(2, rentalRepository.findByCustomer(mostActiveCustomers.get(1)).size());
+		assertEquals(2, rentalRepository.findByCustomer(mostActiveCustomers.get(2)).size());
 	}
 	
 }
