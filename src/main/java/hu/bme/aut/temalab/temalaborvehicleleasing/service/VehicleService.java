@@ -46,20 +46,13 @@ public final class VehicleService<vehicles> {
                 .orElse(0);
     }
 
-    /**
-     * Returns all the mileage traveled, if theres a customer given, gives back the mileage traveled by the customer
-     * @param customer optional param
-     * @return mileage traveled
-     */
-    public int allMileageTraveled(Customer customer){//Customer is NULLABLE!
-        if(customer!=null) return allMileageTraveledByCustomer(customer);
+
+    public int allMileageTraveled(){
         int allMileageTraveled = 0;
         ArrayList<Vehicle> vehicles = (ArrayList<Vehicle>) vehicleRepository.findAll();
-        if(customer==null){
             for(Vehicle vehicle :vehicles){
                 allMileageTraveled += vehicle.getMileage();
             }
-        }
         return allMileageTraveled;
     }
     public int allMileageTraveledByCustomer(@NonNull Customer customer){
