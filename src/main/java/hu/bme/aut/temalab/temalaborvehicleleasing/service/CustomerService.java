@@ -20,7 +20,8 @@ public final class CustomerService {
 	private final RentalRepository rentalRepository;
 	
 	/**
-	 * Finds the desired number of active customers. Activeness is measured by the number of rentals. 
+	 * Finds the desired number of active customers. Activeness is measured by the number of rentals.
+	 * 
 	 * @param topHowMany desired number of active customers
 	 * @return collection of active customers 
 	 */
@@ -43,7 +44,7 @@ public final class CustomerService {
 		Integer[] numberOfRentalArray = new Integer[numberOfRentalSet.size()];
 		numberOfRentalSet.toArray(numberOfRentalArray);
 		
-		//Remove not active customers
+		//Add active customers
 		for(int i = numberOfRentalArray.length - 1; i > numberOfRentalArray.length - 1 - topHowMany; i--) {
 			for(Customer c : customers) {
 				if(rentalRepository.findByCustomer(c).size() == numberOfRentalArray[i]) {mostActiveCustomers.add(c);}
