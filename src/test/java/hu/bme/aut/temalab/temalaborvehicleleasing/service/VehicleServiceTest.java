@@ -5,6 +5,7 @@ import hu.bme.aut.temalab.temalaborvehicleleasing.model.Car;
 import hu.bme.aut.temalab.temalaborvehicleleasing.model.Customer;
 import hu.bme.aut.temalab.temalaborvehicleleasing.model.Rental;
 import hu.bme.aut.temalab.temalaborvehicleleasing.model.enums.*;
+import hu.bme.aut.temalab.temalaborvehicleleasing.repository.CustomerRepository;
 import hu.bme.aut.temalab.temalaborvehicleleasing.repository.RentalRepository;
 import hu.bme.aut.temalab.temalaborvehicleleasing.repository.VehicleRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
@@ -32,6 +34,8 @@ class VehicleServiceTest {
 
     @Autowired
     private RentalRepository   rentalRepository;
+    @Autowired
+    private CustomerRepository customerRepository;
 
     private Customer customer;
     private  Car car;
@@ -64,22 +68,36 @@ class VehicleServiceTest {
                 .build();
         customer = Customer.builder()
                 .rentals(new ArrayList<Rental>())
+                .rentals(null)
+                .bonusPoints(0)
+                .firstName("Laci")
+                .lastName("Nemeth")
+                .drivingLicenceNumber("Laci 22")
+                .password("passwd")
+                .username("laci22")
                 .build();
         rent = Rental.builder()
                 .customer(customer)
                 .vehicle(car)
+                .endDate(LocalDate.now())
+                .startDate(LocalDate.now())
+                .price(200)
+                .useKm(2000)
                 .build();
         Rental rent2 = Rental.builder()
-                .customer(customer)
+                .customer(null)
                 .vehicle(bike)
+                .endDate(LocalDate.now())
+                .startDate(LocalDate.now())
+                .price(200)
+                .useKm(2000)
                 .build();
         ArrayList<Rental> rentals= new ArrayList<>();
-        rentals.add(rent);
-        rentals.add(rent2);
         //linking rentals to customer
         customer.setRentals(rentals);
 
-        rentalRepository.save(rent);
+        customerRepository.save(customer);
+        rentals.add(rent);
         vehicleRepository.save(
                 Bike.builder()
                         .vehicleType(VehicleType.BIKE)
@@ -95,12 +113,15 @@ class VehicleServiceTest {
         );
         vehicleRepository.save(bike);
         vehicleRepository.save(car);
+        customerRepository.save(customer);
+        rentalRepository.save(rent);
     }
 
     @AfterEach
     void tearDown() {
-        vehicleRepository.deleteAll();
         rentalRepository.deleteAll();
+        customerRepository.deleteAll();
+        vehicleRepository.deleteAll();
     }
 
     @Test
@@ -123,10 +144,11 @@ class VehicleServiceTest {
     }
     @Test
     void mileageTraveledByCustomer(){
-        assertEquals(1544+13242,vehicleService.allMileageTraveled(customer));
+        assertEquals(1544,vehicleService.allMileageTraveled(customer));
     }
     @Test
     void rentalRepositoryFindByVehicle(){
-        assertEquals(rent,rentalRepository.findByVehicle(car));
+        ArrayList<Rental> rents = (ArrayList<Rental>) rentalRepository.findByVehicle(car);
+        assertEquals(rent.getId(),rents.get(0).getId());
     }
 }
