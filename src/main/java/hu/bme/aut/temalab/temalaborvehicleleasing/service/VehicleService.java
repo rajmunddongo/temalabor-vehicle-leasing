@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 @Service
 @RequiredArgsConstructor
-public final class VehicleService<vehicles> {
+public final class VehicleService{
     private final VehicleRepository vehicleRepository;
     private final RentalRepository rentalRepository;
 
