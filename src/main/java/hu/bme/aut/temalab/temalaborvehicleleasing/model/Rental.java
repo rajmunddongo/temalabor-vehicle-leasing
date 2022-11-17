@@ -21,11 +21,11 @@ public final class Rental {
     @Column(unique = true, nullable = false)
     private UUID id;
 
-    @OneToOne(optional = false)
+    @ManyToOne(targetEntity = Vehicle.class, optional = false)
     @Cascade(org.hibernate.annotations.CascadeType.LOCK)
     private Vehicle vehicle;
 
-    @OneToOne(optional = false)
+    @ManyToOne(optional = false)
     @Cascade(org.hibernate.annotations.CascadeType.LOCK)
     private Customer customer;
 
