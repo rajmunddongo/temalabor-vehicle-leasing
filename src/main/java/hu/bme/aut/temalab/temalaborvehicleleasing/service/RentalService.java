@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -67,13 +66,6 @@ public class RentalService {
      * @return total spending
      */
     public int totalSpendingAfterDate(Customer customer, LocalDate of) {
-        //Get the Customers rentals
-        Collection<Rental> rentals = rentalRepository.findByCustomer(customer);
-        int totalSpending = 0;
-        for (Rental rental: rentals) {
-            if(rental.getStartDate().isAfter(of))
-                totalSpending += rental.getPrice();
-        }
-        return totalSpending;
+        return rentalRepository.findByCustomer(customer).stream().filter(rental -> rental.getStartDate().isAfter(of)).mapToInt(Rental::getPrice).sum();
     }
 }
