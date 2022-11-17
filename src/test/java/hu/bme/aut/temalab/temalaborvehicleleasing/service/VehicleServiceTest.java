@@ -140,11 +140,11 @@ class VehicleServiceTest {
 
     @Test
     void allMileageTraveled(){ //TDD
-        assertEquals(1544+13242+1234,vehicleService.allMileageTraveled(null));
+        assertEquals(1544+13242+1234,vehicleService.allMileageTraveled());
     }
     @Test
     void mileageTraveledByCustomer(){
-        assertEquals(1544,vehicleService.allMileageTraveled(customer));
+        assertEquals(1544,vehicleService.allMileageTraveledByCustomer(customer));
     }
     @Test
     void rentalRepositoryFindByVehicle(){
