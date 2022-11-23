@@ -155,4 +155,9 @@ class RentalServiceTest {
         assertEquals(205, rentalService.totalLengthKm(customerRepository.findById(customer2).get()));
         assertEquals(0, rentalService.totalLengthKm(customerRepository.findById(customer3).get()));
     }
+    @Test
+    void totalSpendingAfterDateTest(){
+        assertEquals(2000, rentalService.totalSpendingAfterDate(customerRepository.findById(customer2).get(), LocalDate.of(2022, Calendar.SEPTEMBER, 8)));
+        assertEquals(0, rentalService.totalSpendingAfterDate(customerRepository.findById(customer2).get(), LocalDate.of(2022, Calendar.DECEMBER, 8)));
+    }
 }

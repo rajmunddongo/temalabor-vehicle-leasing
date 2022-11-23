@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -55,5 +56,16 @@ public class RentalService {
      */
     public Integer totalLengthKm(@NonNull Customer customer) {
         return rentalRepository.findByCustomer(customer).stream().mapToInt(Rental::getUseKm).sum();
+    }
+    /**
+     * Calculates the total spend of a customer after a Date
+     * The date refers to the start of the rental
+     *
+     * @param customer Customer data
+     * @param of LocalDate date after checking the rentals
+     * @return total spending
+     */
+    public int totalSpendingAfterDate(Customer customer, LocalDate of) {
+        return rentalRepository.findByCustomer(customer).stream().filter(rental -> rental.getStartDate().isAfter(of)).mapToInt(Rental::getPrice).sum();
     }
 }
