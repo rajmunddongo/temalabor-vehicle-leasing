@@ -2,7 +2,6 @@ package hu.bme.aut.temalab.temalaborvehicleleasing.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -52,5 +51,26 @@ public final class CustomerService {
 		}
 		
 		return mostActiveCustomers;
+	}
+	
+	/**
+	 * Increases the given number of most active customers' bonus point by the given amount
+	 * 
+	 * @param amount quantity of the bonus points
+	 * @param topHowMany number of most active customers
+	 */
+	public void giveOutBonusPoints(int amount, int topHowMany) {
+		//Parameter check
+		if(amount <= 0 || topHowMany <=0 || topHowMany > customerRepository.findAll().size()) return;
+		
+		Collection<Customer> mostActiveCustomers = findMostActiveCustomers(topHowMany);
+		
+		//Increment bonus points
+		mostActiveCustomers.forEach(c -> {
+			//If c.getBonusPoints()+amount > Integer.MAX_VALUE then it will start counting from Integer.MIN_VALUE which is a negative number
+			if(c.getBonusPoints() + amount < 0) {c.setBonusPoints(Integer.MAX_VALUE);}
+			else {c.setBonusPoints(c.getBonusPoints() + amount);}
+			customerRepository.save(c);
+		});
 	}
 }

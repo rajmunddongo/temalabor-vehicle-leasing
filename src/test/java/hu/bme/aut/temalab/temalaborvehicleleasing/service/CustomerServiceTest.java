@@ -3,7 +3,7 @@ package hu.bme.aut.temalab.temalaborvehicleleasing.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDate;
-import java.util.Collection;
+
 import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
@@ -17,8 +17,6 @@ import hu.bme.aut.temalab.temalaborvehicleleasing.model.Bike;
 import hu.bme.aut.temalab.temalaborvehicleleasing.model.Car;
 import hu.bme.aut.temalab.temalaborvehicleleasing.model.Customer;
 import hu.bme.aut.temalab.temalaborvehicleleasing.model.Rental;
-import hu.bme.aut.temalab.temalaborvehicleleasing.model.User;
-import hu.bme.aut.temalab.temalaborvehicleleasing.model.Vehicle;
 import hu.bme.aut.temalab.temalaborvehicleleasing.model.enums.BikeStrokeType;
 import hu.bme.aut.temalab.temalaborvehicleleasing.model.enums.CarBodyTypes;
 import hu.bme.aut.temalab.temalaborvehicleleasing.model.enums.FuelType;
@@ -58,6 +56,7 @@ class CustomerServiceTest {
 						.username("homie")
 						.password("duffbeer")
 						.drivingLicenceNumber("AAAAAAAA")
+						.bonusPoints(5)
 						.build()
 		);
 		
@@ -68,6 +67,7 @@ class CustomerServiceTest {
 						.username("margiee")
 						.password("familylove")
 						.drivingLicenceNumber("BBBBBBBB")
+						.bonusPoints(5)
 						.build()
 		);
 		
@@ -78,6 +78,7 @@ class CustomerServiceTest {
 						.username("skateboardBoy")
 						.password("vandalismisfun")
 						.drivingLicenceNumber("CCCCCCCC")
+						.bonusPoints(5)
 						.build()
 		);
 		
@@ -88,6 +89,7 @@ class CustomerServiceTest {
 						.username("catlady")
 						.password("beeinganerdisfun")
 						.drivingLicenceNumber("DDDDDDDD")
+						.bonusPoints(5)
 						.build()
 		);
 		
@@ -98,6 +100,7 @@ class CustomerServiceTest {
 						.username("babygirl")
 						.password("cuppcupp")
 						.drivingLicenceNumber("EEEEEEEE")
+						.bonusPoints(5)
 						.build()
 		);
 		
@@ -331,6 +334,24 @@ class CustomerServiceTest {
 		assertEquals(3, rentalRepository.findByCustomer(mostActiveCustomers.get(0)).size());
 		assertEquals(2, rentalRepository.findByCustomer(mostActiveCustomers.get(1)).size());
 		assertEquals(2, rentalRepository.findByCustomer(mostActiveCustomers.get(2)).size());
+	}
+	
+	@Test
+	void giveOutBonusPointsTest() {
+		
+		List<Customer> activeCustomers;
+		
+		customerService.giveOutBonusPoints(15, 1);
+		activeCustomers = List.copyOf(customerService.findMostActiveCustomers(1));
+		assertEquals(1, activeCustomers.size());
+		assertEquals(20, activeCustomers.get(0).getBonusPoints());
+		
+		customerService.giveOutBonusPoints(Integer.MAX_VALUE, 2);
+		activeCustomers = List.copyOf(customerService.findMostActiveCustomers(2));
+		assertEquals(3, activeCustomers.size());
+		assertEquals(Integer.MAX_VALUE, activeCustomers.get(0).getBonusPoints());
+		assertEquals(Integer.MAX_VALUE, activeCustomers.get(1).getBonusPoints());
+		assertEquals(Integer.MAX_VALUE, activeCustomers.get(2).getBonusPoints());
 	}
 	
 }
