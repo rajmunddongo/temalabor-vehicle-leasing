@@ -1,3 +1,4 @@
+/*
 package hu.bme.aut.temalab.temalaborvehicleleasing.service;
 
 import java.time.LocalDate;
@@ -171,3 +172,4 @@ class CustomerServiceMockitoTest {
 		
 	}
 }
+*/
