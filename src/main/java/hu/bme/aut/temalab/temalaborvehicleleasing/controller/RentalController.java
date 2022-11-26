@@ -36,7 +36,7 @@ public class RentalController {
                     rental.setEndDate(newRental.getEndDate());
                     rental.setStartDate(newRental.getStartDate());
                     rental.setUseKm(newRental.getUseKm());
-                    return repository.save(rental)
+                    return repository.save(rental);
                 })
                 .orElseGet(()->{
                     newRental.setId(id);
