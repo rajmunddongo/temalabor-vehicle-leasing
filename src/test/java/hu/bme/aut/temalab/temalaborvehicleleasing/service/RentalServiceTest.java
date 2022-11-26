@@ -36,9 +36,6 @@ class RentalServiceTest {
     @Autowired
     private CustomerRepository customerRepository;
 
-    @Autowired
-    private EntityManagerFactory entityManagerFactory;
-
     private UUID customer1;
     private UUID customer2;
     private UUID customer3;

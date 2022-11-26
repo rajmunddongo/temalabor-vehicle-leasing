@@ -17,8 +17,6 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -79,14 +77,6 @@ class VehicleServiceTest {
         rent = Rental.builder()
                 .customer(customer)
                 .vehicle(car)
-                .endDate(LocalDate.now())
-                .startDate(LocalDate.now())
-                .price(200)
-                .useKm(2000)
-                .build();
-        Rental rent2 = Rental.builder()
-                .customer(null)
-                .vehicle(bike)
                 .endDate(LocalDate.now())
                 .startDate(LocalDate.now())
                 .price(200)
