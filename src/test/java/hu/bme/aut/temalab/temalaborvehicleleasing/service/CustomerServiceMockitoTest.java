@@ -157,7 +157,7 @@ class CustomerServiceMockitoTest {
 		rentals.add(Rental.builder()
         				.vehicle(vehicle)
         				.customer(customers.get(3))
-        				.startDate(LocalDate.of(2000, 2, 1))
+        				.startDate(LocalDate.now())
         				.endDate(LocalDate.of(2000, 2, 7))
         				.price(500)
         				.useKm(1000)
@@ -166,7 +166,7 @@ class CustomerServiceMockitoTest {
 		rentals.add(Rental.builder()
         				.vehicle(vehicle)
         				.customer(customers.get(3))
-        				.startDate(LocalDate.now())
+        				.startDate(LocalDate.of(2000, 2, 5))
         				.endDate(LocalDate.of(2000, 2, 7))
         				.price(500)
         				.useKm(1000)
@@ -187,5 +187,8 @@ class CustomerServiceMockitoTest {
 		Collection<Customer> inactiveCustomers = customerService.findInactiveCustomers();
 		
 		assertEquals(2, inactiveCustomers.size());
+		
+		assertEquals(customers.get(0), List.copyOf(inactiveCustomers).get(0));
+		assertEquals(customers.get(2), List.copyOf(inactiveCustomers).get(1));
 	}
 }

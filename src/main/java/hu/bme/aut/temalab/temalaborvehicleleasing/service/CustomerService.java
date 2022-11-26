@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -88,10 +89,13 @@ public final class CustomerService {
 		List<Customer> customers = customerRepository.findAll();
 		List<Customer> inactiveCustomers = new ArrayList<>();
 		
-		List<Rental> rentals;
+		ArrayList<Rental> rentals;
 		
 		for(Customer c : customers) {
-			rentals = List.copyOf(rentalRepository.findByCustomer(c));
+			rentals = new ArrayList<>(rentalRepository.findByCustomer(c));
+			
+			//Ascending order of rentals in case of somebody appended latter rentals manually
+			rentals.sort(Comparator.comparing(Rental::getStartDate));
 			
 			if(rentals != null && !rentals.isEmpty()) {
 				if(ChronoUnit.YEARS.between(rentals.get(rentals.size() - 1).getStartDate(), LocalDate.now()) > 2) inactiveCustomers.add(c);
