@@ -10,8 +10,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
-@ActiveProfiles("test")
+
 @ExtendWith(MockitoExtension.class)
 public class RentalServiceMockitoTest {
     @Mock
@@ -59,7 +56,7 @@ public class RentalServiceMockitoTest {
         List<Vehicle> mostRentalList2 = rentalService.vehiclesOrderedByRentals();
         assertEquals(1, mostRentalList2.size());
         Car car = new Car();
-        //Add a another rental to list
+        //Add a rental to list
         rental = Rental.builder()
                 .customer(new Customer())
                 .vehicle(car)
@@ -67,7 +64,7 @@ public class RentalServiceMockitoTest {
         list.add(rental);
         mostRentalList2 = rentalService.vehiclesOrderedByRentals();
         assertEquals(2, mostRentalList2.size());
-        //Add a another rental but the same Car
+        //Add a rental but the same Car
         rental = Rental.builder()
                 .customer(new Customer())
                 .vehicle(car)
