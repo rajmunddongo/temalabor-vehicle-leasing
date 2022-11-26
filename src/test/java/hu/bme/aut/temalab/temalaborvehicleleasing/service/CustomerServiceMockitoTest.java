@@ -191,4 +191,32 @@ class CustomerServiceMockitoTest {
 		assertEquals(customers.get(0), List.copyOf(inactiveCustomers).get(0));
 		assertEquals(customers.get(2), List.copyOf(inactiveCustomers).get(1));
 	}
+	
+	@Test
+	void findMostActiveCustomersTest() {
+		
+		when(customerRepository.findAll()).thenReturn(customers);
+		
+		when(rentalRepository.findByCustomer(customers.get(0))).thenReturn(List.of(rentals.get(0), rentals.get(1)));
+		when(rentalRepository.findByCustomer(customers.get(1))).thenReturn(List.of(rentals.get(2)));
+		when(rentalRepository.findByCustomer(customers.get(2))).thenReturn(List.of(rentals.get(3), rentals.get(4)));
+		when(rentalRepository.findByCustomer(customers.get(3))).thenReturn(List.of(rentals.get(5), rentals.get(6), rentals.get(7)));
+		when(rentalRepository.findByCustomer(customers.get(4))).thenReturn(List.of());
+
+		assertEquals(null, customerService.findMostActiveCustomers(-1));
+		assertEquals(null, customerService.findMostActiveCustomers(6));
+		
+		List<Customer> mostActiveCustomers = List.copyOf(customerService.findMostActiveCustomers(1));
+		
+		assertEquals(1, mostActiveCustomers.size());
+		assertEquals(3, rentalRepository.findByCustomer(mostActiveCustomers.get(0)).size());
+		
+		mostActiveCustomers = List.copyOf(customerService.findMostActiveCustomers(2));
+		
+		assertEquals(3, mostActiveCustomers.size());
+		assertEquals(3, rentalRepository.findByCustomer(mostActiveCustomers.get(0)).size());
+		assertEquals(2, rentalRepository.findByCustomer(mostActiveCustomers.get(1)).size());
+		assertEquals(2, rentalRepository.findByCustomer(mostActiveCustomers.get(2)).size());
+
+	}
 }
