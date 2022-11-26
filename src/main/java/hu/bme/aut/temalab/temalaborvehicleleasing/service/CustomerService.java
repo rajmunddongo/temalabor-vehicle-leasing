@@ -1,13 +1,17 @@
 package hu.bme.aut.temalab.temalaborvehicleleasing.service;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
 import org.springframework.stereotype.Service;
 
 import hu.bme.aut.temalab.temalaborvehicleleasing.model.Customer;
+import hu.bme.aut.temalab.temalaborvehicleleasing.model.Rental;
 import hu.bme.aut.temalab.temalaborvehicleleasing.repository.CustomerRepository;
 import hu.bme.aut.temalab.temalaborvehicleleasing.repository.RentalRepository;
 import lombok.RequiredArgsConstructor;
@@ -72,5 +76,28 @@ public final class CustomerService {
 			else {c.setBonusPoints(c.getBonusPoints() + amount);}
 			customerRepository.save(c);
 		});
+	}
+	
+	/**
+	 * Finds inactive customers in the database. A customer is inactive if his/her last rental's start date is more than 2 years behind than the current date
+	 * 
+	 * @return a collection of inactive customers
+	 */
+	public Collection<Customer> findInactiveCustomers() {
+		
+		List<Customer> customers = customerRepository.findAll();
+		List<Customer> inactiveCustomers = new ArrayList<>();
+		
+		List<Rental> rentals;
+		
+		for(Customer c : customers) {
+			rentals = List.copyOf(rentalRepository.findByCustomer(c));
+			
+			if(rentals != null && !rentals.isEmpty()) {
+				if(ChronoUnit.YEARS.between(rentals.get(rentals.size() - 1).getStartDate(), LocalDate.now()) > 2) inactiveCustomers.add(c);
+			}
+		}
+		
+		return inactiveCustomers;
 	}
 }
