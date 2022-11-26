@@ -1,7 +1,11 @@
-/*
 package hu.bme.aut.temalab.temalaborvehicleleasing.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
+
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -40,7 +44,9 @@ class CustomerServiceMockitoTest {
 	
 	@BeforeEach
 	void setUp() {
-		customerService = new CustomerService(customerRepository, rentalRepository);
+		
+		customers = new ArrayList<>();
+		rentals = new ArrayList<>();
 		
 		customers.add(Customer.builder()
 						.firstName("Homer")
@@ -83,30 +89,30 @@ class CustomerServiceMockitoTest {
 						.build());
 		
 		vehicle = Bike.builder()
-                .vehicleType(VehicleType.BIKE)
-                .licensePlate("ABC-123")
-                .seats(1)
-                .mileage(1234)
-                .mileageLimit(200)
-                .horsePower(95)
-                .gearBoxType(GearboxType.MANUAL)
-                .fuelType(FuelType.PETROL_PREMIUM)
-                .strokeType(BikeStrokeType.FOUR_STROKE)
-                .build();
+		                .vehicleType(VehicleType.BIKE)
+		                .licensePlate("ABC-123")
+		                .seats(1)
+		                .mileage(1234)
+		                .mileageLimit(200)
+		                .horsePower(95)
+		                .gearBoxType(GearboxType.MANUAL)
+		                .fuelType(FuelType.PETROL_PREMIUM)
+		                .strokeType(BikeStrokeType.FOUR_STROKE)
+		                .build();
 		
 		rentals.add(Rental.builder()
-				.vehicle(vehicle)
-				.customer(customers.get(0))
-				.startDate(LocalDate.of(2000, 1, 1))
-				.endDate(LocalDate.of(2000, 1, 7))
-				.price(500)
-				.useKm(1000)
-				.build());
+						.vehicle(vehicle)
+						.customer(customers.get(0))
+						.startDate(LocalDate.of(2000, 1, 1))
+						.endDate(LocalDate.of(2000, 1, 7))
+						.price(500)
+						.useKm(1000)
+						.build());
 		
 		rentals.add(Rental.builder()
         				.vehicle(vehicle)
         				.customer(customers.get(0))
-        				.startDate(LocalDate.of(2000, 2, 1))
+        				.startDate(LocalDate.now().minusYears(3))
         				.endDate(LocalDate.of(2000, 2, 7))
         				.price(500)
         				.useKm(1000)
@@ -115,7 +121,7 @@ class CustomerServiceMockitoTest {
 		rentals.add(Rental.builder()
         				.vehicle(vehicle)
         				.customer(customers.get(1))
-        				.startDate(LocalDate.of(2000, 2, 1))
+        				.startDate(LocalDate.now())
         				.endDate(LocalDate.of(2000, 2, 7))
         				.price(500)
         				.useKm(1000)
@@ -133,7 +139,7 @@ class CustomerServiceMockitoTest {
 		rentals.add(Rental.builder()
         				.vehicle(vehicle)
         				.customer(customers.get(2))
-        				.startDate(LocalDate.of(2000, 2, 1))
+        				.startDate(LocalDate.now().minusYears(3))
         				.endDate(LocalDate.of(2000, 2, 7))
         				.price(500)
         				.useKm(1000)
@@ -160,7 +166,7 @@ class CustomerServiceMockitoTest {
 		rentals.add(Rental.builder()
         				.vehicle(vehicle)
         				.customer(customers.get(3))
-        				.startDate(LocalDate.of(2000, 2, 1))
+        				.startDate(LocalDate.now())
         				.endDate(LocalDate.of(2000, 2, 7))
         				.price(500)
         				.useKm(1000)
@@ -168,8 +174,18 @@ class CustomerServiceMockitoTest {
 	}
 	
 	@Test
-	void Test() {
+	void findInactiveCustomersTest() {
 		
+		when(customerRepository.findAll()).thenReturn(customers);
+		
+		when(rentalRepository.findByCustomer(customers.get(0))).thenReturn(List.of(rentals.get(0), rentals.get(1)));
+		when(rentalRepository.findByCustomer(customers.get(1))).thenReturn(List.of(rentals.get(2)));
+		when(rentalRepository.findByCustomer(customers.get(2))).thenReturn(List.of(rentals.get(3), rentals.get(4)));
+		when(rentalRepository.findByCustomer(customers.get(3))).thenReturn(List.of(rentals.get(5), rentals.get(6), rentals.get(7)));
+		when(rentalRepository.findByCustomer(customers.get(4))).thenReturn(List.of());
+
+		Collection<Customer> inactiveCustomers = customerService.findInactiveCustomers();
+		
+		assertEquals(2, inactiveCustomers.size());
 	}
 }
-*/
