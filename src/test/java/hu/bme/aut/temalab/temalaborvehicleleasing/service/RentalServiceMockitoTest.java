@@ -2,8 +2,6 @@ package hu.bme.aut.temalab.temalaborvehicleleasing.service;
 
 import hu.bme.aut.temalab.temalaborvehicleleasing.model.*;
 import hu.bme.aut.temalab.temalaborvehicleleasing.repository.RentalRepository;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -25,14 +23,6 @@ public class RentalServiceMockitoTest {
     RentalRepository rentalRepository;
     @InjectMocks
     RentalService rentalService;
-    @BeforeEach
-    void setUp() {
-        rentalService = new RentalService(rentalRepository);
-    }
-    @AfterEach
-    void tearDown() {
-        rentalRepository.deleteAll();
-    }
     @Test
     void totalSpending() {
         Customer customer = new Customer();
