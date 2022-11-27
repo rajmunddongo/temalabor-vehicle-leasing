@@ -13,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManagerFactory;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Iterator;
@@ -36,18 +35,11 @@ class RentalServiceTest {
     @Autowired
     private CustomerRepository customerRepository;
 
-    @Autowired
-    private EntityManagerFactory entityManagerFactory;
-
     private UUID customer1;
     private UUID customer2;
     private UUID customer3;
     private UUID car;
     private UUID bike;
-
-    private UUID rental1;
-    private UUID rental2;
-    private UUID rental3;
 
     @BeforeEach
     @Transactional
@@ -98,7 +90,7 @@ class RentalServiceTest {
                 .carBodyTypes(CarBodyTypes.COUPE)
                 .build()).getId();
 
-        rental1 = rentalRepository.save(Rental.builder()
+        rentalRepository.save(Rental.builder()
                 .price(1000)
                 .startDate(LocalDate.of(2022, Calendar.OCTOBER, 10))
                 .endDate(LocalDate.of(2022, Calendar.OCTOBER, 25))
@@ -107,7 +99,7 @@ class RentalServiceTest {
                 .vehicle(vehicleRepository.findById(bike).get())
                 .build()).getId();
 
-        rental2 = rentalRepository.save(Rental.builder()
+        rentalRepository.save(Rental.builder()
                 .price(2000)
                 .startDate(LocalDate.of(2022, Calendar.SEPTEMBER, 10))
                 .endDate(LocalDate.of(2022, Calendar.OCTOBER, 8))
@@ -116,7 +108,7 @@ class RentalServiceTest {
                 .vehicle(vehicleRepository.findById(car).get())
                 .build()).getId();
 
-        rental3 = rentalRepository.save(Rental.builder()
+        rentalRepository.save(Rental.builder()
                 .price(1000)
                 .startDate(LocalDate.of(2022, Calendar.AUGUST, 10))
                 .endDate(LocalDate.of(2022, Calendar.AUGUST, 25))
