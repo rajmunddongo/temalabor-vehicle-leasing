@@ -48,6 +48,7 @@ public final class VehicleService{
 
     /**
      * Calculate all mileage traveled by all vehicles
+     * 
      * @return all mileage traveled by all vehicles
      */
     public int allMileageTraveled(){
@@ -61,6 +62,7 @@ public final class VehicleService{
 
     /**
      * Calculate all mileage traveled by the given customer
+     * 
      * @param customer
      * @return mileage traveled by the given customer
      */

@@ -112,7 +112,7 @@ public class CustomerControllerTest {
 		ObjectMapper objectMapper = new ObjectMapper();
 
 		mockMvc.perform(post("/customers/save")
-						.contentType(MediaType.APPLICATION_JSON_UTF8)
+						.contentType(MediaType.APPLICATION_JSON)
 						.content(objectMapper.writeValueAsString(newCustomer)))
 					.andExpect(status().isOk())
 					.andExpect(jsonPath("$.firstName").value(newCustomer.getFirstName()))

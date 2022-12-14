@@ -13,7 +13,7 @@ public interface AdministratorRepository extends JpaRepository<Administrator, UU
 	 * Finds an administrator in the database
 	 * 
 	 * @param employeeNumber identifies the desired administrator
-	 * @return an empty or a filled Optional according to the process's result
+	 * @return an empty or a filled Optional (containing the found administrator) according to the process's result
 	 */
 	Optional<Administrator> findByEmployeeNumber(String employeeNumber);
 }

@@ -44,7 +44,7 @@ public class UserDetailsServiceImplTest {
     }
 
     @Test
-    void UserDetailsServiceImplTest() {
+    void userDetailsServiceImplTest() {
         UserDetails user = udsi.loadUserByUsername("gotcha");
         assertTrue(user.getAuthorities().contains(UserRole.ROLE_CUSTOMER));
         assertTrue(user.getPassword().contains("getthis"));
@@ -52,7 +52,7 @@ public class UserDetailsServiceImplTest {
     }
 
     @Test
-    void TestUsernameIsEmpty() {
+    void usernameIsEmptyTest() {
         Executable executable = () -> udsi.loadUserByUsername("InvalidUserName");
         Exception exception = assertThrows(UsernameNotFoundException.class, executable);
         assertTrue(exception.getMessage().contains("User not found!"));

@@ -12,7 +12,7 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 	 * Finds a user in the database
 	 * 
 	 * @param username identifies the desired user
-	 * @return an empty or a filled Optional according to the process's result
+	 * @return an empty or a filled Optional (containing the found user) according to the process's result
 	 */
 	Optional<User> findByUsername(String username);
 }
