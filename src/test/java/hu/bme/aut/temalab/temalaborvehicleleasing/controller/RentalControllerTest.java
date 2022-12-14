@@ -6,7 +6,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import hu.bme.aut.temalab.temalaborvehicleleasing.model.Bike;
 import hu.bme.aut.temalab.temalaborvehicleleasing.model.Customer;
 import hu.bme.aut.temalab.temalaborvehicleleasing.model.Rental;
-import hu.bme.aut.temalab.temalaborvehicleleasing.model.enums.*;
 import hu.bme.aut.temalab.temalaborvehicleleasing.repository.RentalRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -93,7 +92,7 @@ public class RentalControllerTest {
         mockMvc.perform(delete("/rentals/a1a8629e-ee35-4c42-9ef6-4a2b61381164/delete")).andExpect(status().isNoContent());
     }
 
-    /*@Test
+    @Test
     public void createNewRental() throws Exception {
         when(rentalRepository.save(any(Rental.class))).thenAnswer((invocation) -> invocation.getArgument(0));
         Rental newRental = Rental.builder()
@@ -102,12 +101,11 @@ public class RentalControllerTest {
                 .endDate(LocalDate.of(2022, Calendar.AUGUST, 25))
                 .useKm(5)
                 .customer(new Customer())
-                .vehicle(new Bike())
                 .build();
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         mockMvc.perform(post("/rentals/save")
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(newRental)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.price").value(newRental.getPrice()))
@@ -122,17 +120,6 @@ public class RentalControllerTest {
                 .endDate(LocalDate.of(2022, Calendar.OCTOBER, 25))
                 .useKm(200)
                 .customer(new Customer())
-                .vehicle(Bike.builder()
-                        .vehicleType(VehicleType.BIKE)
-                        .licensePlate("ABC-123")
-                        .seats(1)
-                        .mileage(1234)
-                        .mileageLimit(200)
-                        .horsePower(95)
-                        .gearBoxType(GearboxType.MANUAL)
-                        .fuelType(FuelType.PETROL_PREMIUM)
-                        .strokeType(BikeStrokeType.FOUR_STROKE)
-                        .build())
                 .build();
         when(rentalRepository.findById(UUID.fromString("a6a8669e-ee95-4c42-9ef6-4a9b61380164"))).thenReturn(Optional.of(rentals.get(2)));
         when(rentalRepository.save(any(Rental.class))).thenReturn(updatedRental);
@@ -144,5 +131,5 @@ public class RentalControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.price").value(rentals.get(2).getPrice()))
                 .andExpect(jsonPath("$.useKm").value(rentals.get(2).getUseKm()));
-    }*/
+    }
 }
