@@ -1,9 +1,12 @@
 package hu.bme.aut.temalab.temalaborvehicleleasing.controller;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import hu.bme.aut.temalab.temalaborvehicleleasing.model.Bike;
 import hu.bme.aut.temalab.temalaborvehicleleasing.model.Customer;
 import hu.bme.aut.temalab.temalaborvehicleleasing.model.Rental;
+import hu.bme.aut.temalab.temalaborvehicleleasing.model.enums.*;
 import hu.bme.aut.temalab.temalaborvehicleleasing.repository.RentalRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
@@ -107,8 +111,6 @@ public class RentalControllerTest {
                         .content(objectMapper.writeValueAsString(newRental)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.price").value(newRental.getPrice()))
-                .andExpect(jsonPath("$.startDate").value(newRental.getStartDate()))
-                .andExpect(jsonPath("$.endDate").value(newRental.getEndDate()))
                 .andExpect(jsonPath("$.useKm").value(newRental.getUseKm()));
     }
 
@@ -141,8 +143,6 @@ public class RentalControllerTest {
                         .content(objectMapper.writeValueAsString(updatedRental)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.price").value(rentals.get(2).getPrice()))
-                .andExpect(jsonPath("$.startDate").value(rentals.get(2).getStartDate()))
-                .andExpect(jsonPath("$.endDate").value(rentals.get(2).getEndDate()))
                 .andExpect(jsonPath("$.useKm").value(rentals.get(2).getUseKm()));
     }*/
 }

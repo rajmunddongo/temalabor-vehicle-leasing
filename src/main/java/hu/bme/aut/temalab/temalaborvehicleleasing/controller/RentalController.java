@@ -85,18 +85,17 @@ public class RentalController {
      */
     @PostMapping("/rentals/{id}/update")
     public ResponseEntity<Rental> replaceRental(@RequestBody Rental newRental, @PathVariable UUID id) {
+        Optional<Rental> oldRental;
         try {
-            if (rentalRepository.findById(id).isPresent()) {
-                rentalRepository.findById(id)
-                        .map(rental -> {
-                            rental.setCustomer(newRental.getCustomer());
-                            rental.setPrice(newRental.getPrice());
-                            rental.setVehicle(newRental.getVehicle());
-                            rental.setEndDate(newRental.getEndDate());
-                            rental.setStartDate(newRental.getStartDate());
-                            rental.setUseKm(newRental.getUseKm());
-                            return new ResponseEntity<>(rentalRepository.save(rental), HttpStatus.OK);
-                        });
+            oldRental = rentalRepository.findById(id);
+            if(oldRental.isPresent()){
+                oldRental.get().setCustomer(newRental.getCustomer());
+                oldRental.get().setPrice(newRental.getPrice());
+                oldRental.get().setVehicle(newRental.getVehicle());
+                oldRental.get().setUseKm(newRental.getUseKm());
+                oldRental.get().setEndDate(newRental.getEndDate());
+                oldRental.get().setStartDate(newRental.getStartDate());
+                return new ResponseEntity<>(rentalRepository.save(oldRental.get()), HttpStatus.OK);
             }
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
