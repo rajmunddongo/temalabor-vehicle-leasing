@@ -1,5 +1,7 @@
 package hu.bme.aut.temalab.temalaborvehicleleasing.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import hu.bme.aut.temalab.temalaborvehicleleasing.controller.util.CustomAuthorityDeserializerForCustomer;
 import hu.bme.aut.temalab.temalaborvehicleleasing.model.enums.UserRole;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,6 +31,7 @@ public final class Customer extends User {
     private Collection<Rental> rentals;
 
     @Override
+    @JsonDeserialize(using = CustomAuthorityDeserializerForCustomer.class)
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Set.of(UserRole.ROLE_CUSTOMER);
     }
