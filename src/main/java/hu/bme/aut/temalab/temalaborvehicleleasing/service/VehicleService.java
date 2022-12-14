@@ -46,7 +46,10 @@ public final class VehicleService{
                 .orElse(0);
     }
 
-
+    /**
+     * Calculate all mileage traveled by all vehicles
+     * @return all mileage traveled by all vehicles
+     */
     public int allMileageTraveled(){
         int allMileageTraveled = 0;
         ArrayList<Vehicle> vehicles = (ArrayList<Vehicle>) vehicleRepository.findAll();
@@ -55,6 +58,12 @@ public final class VehicleService{
             }
         return allMileageTraveled;
     }
+
+    /**
+     * Calculate all mileage traveled by the given customer
+     * @param customer
+     * @return mileage traveled by the given customer
+     */
     public int allMileageTraveledByCustomer(@NonNull Customer customer){
         int allMileageTraveled = 0;
         ArrayList<Vehicle> vehicles = (ArrayList<Vehicle>) vehicleRepository.findAll();
