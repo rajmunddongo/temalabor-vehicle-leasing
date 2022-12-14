@@ -101,6 +101,7 @@ public class RentalControllerTest {
                 .endDate(LocalDate.of(2022, Calendar.AUGUST, 25))
                 .useKm(5)
                 .customer(new Customer())
+                .vehicle(new Bike())
                 .build();
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
@@ -120,6 +121,7 @@ public class RentalControllerTest {
                 .endDate(LocalDate.of(2022, Calendar.OCTOBER, 25))
                 .useKm(200)
                 .customer(new Customer())
+                .vehicle(new Bike())
                 .build();
         when(rentalRepository.findById(UUID.fromString("a6a8669e-ee95-4c42-9ef6-4a9b61380164"))).thenReturn(Optional.of(rentals.get(2)));
         when(rentalRepository.save(any(Rental.class))).thenReturn(updatedRental);

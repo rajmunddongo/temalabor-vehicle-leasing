@@ -1,5 +1,6 @@
 package hu.bme.aut.temalab.temalaborvehicleleasing.model;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import hu.bme.aut.temalab.temalaborvehicleleasing.model.enums.FuelType;
 import hu.bme.aut.temalab.temalaborvehicleleasing.model.enums.GearboxType;
 import hu.bme.aut.temalab.temalaborvehicleleasing.model.enums.VehicleType;
@@ -17,6 +18,7 @@ import java.util.UUID;
 @Entity
 @SuperBuilder
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "@class")
 public abstract class Vehicle {
     @Id
     @GeneratedValue
