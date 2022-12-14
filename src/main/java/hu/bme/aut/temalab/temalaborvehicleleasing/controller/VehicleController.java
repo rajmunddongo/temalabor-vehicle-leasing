@@ -1,9 +1,13 @@
 package hu.bme.aut.temalab.temalaborvehicleleasing.controller;
 
 
+import hu.bme.aut.temalab.temalaborvehicleleasing.model.Customer;
 import hu.bme.aut.temalab.temalaborvehicleleasing.model.Vehicle;
 import hu.bme.aut.temalab.temalaborvehicleleasing.repository.VehicleRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,40 +18,64 @@ import java.util.UUID;
 @AllArgsConstructor
 public class VehicleController {
 
+    @Autowired
     private final VehicleRepository vehicleRepository;
 
     @GetMapping("/vehicles")
-    List<Vehicle> all(){
-        return vehicleRepository.findAll();
+    ResponseEntity<List<Vehicle>> all(){
+        try{
+            return new ResponseEntity<>(vehicleRepository.findAll(), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     @PostMapping("/vehicles")
-    Vehicle newEmployee(@RequestBody Vehicle vehicle){
-        return vehicleRepository.save(vehicle);
+    ResponseEntity<Vehicle> newEmployee(@RequestBody Vehicle vehicle){
+        try {
+            return new ResponseEntity<>(vehicleRepository.save(vehicle), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     @GetMapping("/vehicles/{id}")
-    Optional<Vehicle> findVehicle (@PathVariable UUID id){
-        return vehicleRepository.findById(id);
+    ResponseEntity<Optional<Vehicle>> findVehicle (@PathVariable UUID id) {
+        try {
+            if(!vehicleRepository.findById(id).isPresent()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(vehicleRepository.findById(id), HttpStatus.OK);
+        }catch(Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
-    @PutMapping("/vehicles/{id}")
-    Vehicle replaceVehicle(@RequestBody Vehicle newVehicle,@PathVariable UUID id){
-        return vehicleRepository.findById(id)
-                .map(vehicle -> {
-                    vehicle.setVehicleType(newVehicle.getVehicleType());
-                    vehicle.setDescription(newVehicle.getDescription());
-                    vehicle.setMileage(newVehicle.getMileage());
-                    vehicle.setSeats(newVehicle.getSeats());
-                    vehicle.setFuelType(newVehicle.getFuelType());
-                    vehicle.setHorsePower(newVehicle.getHorsePower());
-                    return vehicleRepository.save(newVehicle);
-                })
-                .orElseGet(()->{
-                    newVehicle.setId(id);
-                    return vehicleRepository.save(newVehicle);
-                });
+    @PostMapping("/vehicles/{id}")
+    ResponseEntity<Vehicle> replaceVehicle(@RequestBody Vehicle newVehicle,@PathVariable UUID id) {
+        try {
+            Optional<Vehicle> Vehicle = vehicleRepository.findById(id);
+            if(Vehicle.isPresent()){
+                Vehicle.get().setVehicleType(newVehicle.getVehicleType());
+                Vehicle.get().setDescription(newVehicle.getDescription());
+                Vehicle.get().setFuelType(newVehicle.getFuelType());
+                Vehicle.get().setHorsePower(newVehicle.getHorsePower());
+                Vehicle.get().setMileage(newVehicle.getMileage());
+                Vehicle.get().setMileageLimit(newVehicle.getMileageLimit());
+                Vehicle.get().setSeats(newVehicle.getSeats());
+                Vehicle.get().setGearBoxType(newVehicle.getGearBoxType());
+                return new ResponseEntity<>(vehicleRepository.save(Vehicle.get()),HttpStatus.OK);
+            }
+            else {return new ResponseEntity<>(HttpStatus.NOT_FOUND);}
+
+        } catch(Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     @DeleteMapping("/vehicles/{id}")
-    void deleteVehicle(@PathVariable UUID id){
-        vehicleRepository.deleteById(id);
+    ResponseEntity<HttpStatus> deleteVehicle(@PathVariable UUID id) {
+        try {
+            vehicleRepository.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
 }
