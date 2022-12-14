@@ -9,5 +9,12 @@ import org.springframework.lang.NonNull;
 import hu.bme.aut.temalab.temalaborvehicleleasing.model.Customer;
 
 public interface CustomerRepository extends JpaRepository<Customer, UUID> {
+	
+	/**
+	 * Finds a customer in the database
+	 * 
+	 * @param drivingLicence identifies the desired customer
+	 * @return an empty or a filled Optional according to the process's result
+	 */
 	Optional<Customer> findByDrivingLicenceNumber(@NonNull String drivingLicence);
 }

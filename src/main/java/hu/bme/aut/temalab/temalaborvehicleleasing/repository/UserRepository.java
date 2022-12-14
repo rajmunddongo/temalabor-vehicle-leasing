@@ -7,5 +7,12 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface UserRepository extends JpaRepository<User, UUID> {
-    Optional<User> findByUsername(String username);
+    
+	/**
+	 * Finds a user in the database
+	 * 
+	 * @param username identifies the desired user
+	 * @return an empty or a filled Optional according to the process's result
+	 */
+	Optional<User> findByUsername(String username);
 }
