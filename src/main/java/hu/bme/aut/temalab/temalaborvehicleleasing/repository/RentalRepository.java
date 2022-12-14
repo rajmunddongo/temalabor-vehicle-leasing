@@ -7,7 +7,6 @@ import lombok.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Collection;
-import java.util.Optional;
 import java.util.UUID;
 
 public interface RentalRepository extends JpaRepository<Rental, UUID> {
@@ -25,11 +24,4 @@ public interface RentalRepository extends JpaRepository<Rental, UUID> {
      * @return an empty or a filled Collection<Rental> according to the process's result
      */
     Collection<Rental> findByCustomer(@NonNull Customer customer);
-    /**
-     * Finds a rental in the database
-     *
-     * @param id identifies the desired rental
-     * @return an empty or a filled Optional according to the process's result
-     */
-    Optional<Rental> findByid(UUID id);
 }
