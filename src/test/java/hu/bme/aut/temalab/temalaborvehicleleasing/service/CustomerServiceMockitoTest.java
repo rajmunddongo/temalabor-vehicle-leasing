@@ -1,20 +1,5 @@
 package hu.bme.aut.temalab.temalaborvehicleleasing.service;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
 import hu.bme.aut.temalab.temalaborvehicleleasing.model.Bike;
 import hu.bme.aut.temalab.temalaborvehicleleasing.model.Customer;
 import hu.bme.aut.temalab.temalaborvehicleleasing.model.Rental;
@@ -25,6 +10,21 @@ import hu.bme.aut.temalab.temalaborvehicleleasing.model.enums.GearboxType;
 import hu.bme.aut.temalab.temalaborvehicleleasing.model.enums.VehicleType;
 import hu.bme.aut.temalab.temalaborvehicleleasing.repository.CustomerRepository;
 import hu.bme.aut.temalab.temalaborvehicleleasing.repository.RentalRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class CustomerServiceMockitoTest {
@@ -34,7 +34,7 @@ class CustomerServiceMockitoTest {
 	
 	@Mock
 	private RentalRepository rentalRepository;
-	
+
 	@InjectMocks
 	private CustomerService customerService;
 	
@@ -194,25 +194,25 @@ class CustomerServiceMockitoTest {
 	
 	@Test
 	void findMostActiveCustomersTest() {
-		
+
 		when(customerRepository.findAll()).thenReturn(customers);
-		
+
 		when(rentalRepository.findByCustomer(customers.get(0))).thenReturn(List.of(rentals.get(0), rentals.get(1)));
 		when(rentalRepository.findByCustomer(customers.get(1))).thenReturn(List.of(rentals.get(2)));
 		when(rentalRepository.findByCustomer(customers.get(2))).thenReturn(List.of(rentals.get(3), rentals.get(4)));
 		when(rentalRepository.findByCustomer(customers.get(3))).thenReturn(List.of(rentals.get(5), rentals.get(6), rentals.get(7)));
 		when(rentalRepository.findByCustomer(customers.get(4))).thenReturn(List.of());
 
-		assertEquals(null, customerService.findMostActiveCustomers(-1));
-		assertEquals(null, customerService.findMostActiveCustomers(6));
-		
+		assertNull(customerService.findMostActiveCustomers(-1));
+		assertNull(customerService.findMostActiveCustomers(6));
+
 		List<Customer> mostActiveCustomers = List.copyOf(customerService.findMostActiveCustomers(1));
-		
+
 		assertEquals(1, mostActiveCustomers.size());
 		assertEquals(3, rentalRepository.findByCustomer(mostActiveCustomers.get(0)).size());
-		
+
 		mostActiveCustomers = List.copyOf(customerService.findMostActiveCustomers(2));
-		
+
 		assertEquals(3, mostActiveCustomers.size());
 		assertEquals(3, rentalRepository.findByCustomer(mostActiveCustomers.get(0)).size());
 		assertEquals(2, rentalRepository.findByCustomer(mostActiveCustomers.get(1)).size());

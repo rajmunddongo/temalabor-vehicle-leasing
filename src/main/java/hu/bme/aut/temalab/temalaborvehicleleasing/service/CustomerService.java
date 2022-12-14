@@ -1,33 +1,28 @@
 package hu.bme.aut.temalab.temalaborvehicleleasing.service;
 
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
-
-import org.springframework.stereotype.Service;
-
+import hu.bme.aut.temalab.temalaborvehicleleasing.controller.model.CreateCustomer;
 import hu.bme.aut.temalab.temalaborvehicleleasing.model.Customer;
 import hu.bme.aut.temalab.temalaborvehicleleasing.model.Rental;
 import hu.bme.aut.temalab.temalaborvehicleleasing.repository.CustomerRepository;
 import hu.bme.aut.temalab.temalaborvehicleleasing.repository.RentalRepository;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 
 @Service
-@RequiredArgsConstructor
-public final class CustomerService {
+@AllArgsConstructor
+public class CustomerService {
 	private final CustomerRepository customerRepository;
 	private final RentalRepository rentalRepository;
-	
+
 	/**
 	 * Finds the desired number of active customers. Activeness is measured by the number of rentals.
-	 * 
+	 *
 	 * @param topHowMany desired number of active customers
-	 * @return collection of active customers 
+	 * @return collection of active customers
 	 */
 	public Collection<Customer> findMostActiveCustomers(int topHowMany) {
 		//Parameter check
@@ -93,15 +88,29 @@ public final class CustomerService {
 		
 		for(Customer c : customers) {
 			rentals = new ArrayList<>(rentalRepository.findByCustomer(c));
-			
+
 			//Ascending order of rentals in case of somebody appended latter rentals manually
 			rentals.sort(Comparator.comparing(Rental::getStartDate));
-			
-			if(rentals != null && !rentals.isEmpty()) {
-				if(ChronoUnit.YEARS.between(rentals.get(rentals.size() - 1).getStartDate(), LocalDate.now()) > 2) inactiveCustomers.add(c);
+
+			if (rentals != null && !rentals.isEmpty()) {
+				if (ChronoUnit.YEARS.between(rentals.get(rentals.size() - 1).getStartDate(), LocalDate.now()) > 2)
+					inactiveCustomers.add(c);
 			}
 		}
-		
+
 		return inactiveCustomers;
 	}
+
+	public Customer createCustomer(CreateCustomer createCustomer) {
+		Customer customer = Customer.builder()
+				.username(createCustomer.getUsername())
+				.firstName(createCustomer.getFirstName())
+				.lastName(createCustomer.getLastName())
+				.password(createCustomer.getPassword())
+				.drivingLicenceNumber(createCustomer.getDrivingLicenceNumber())
+				.bonusPoints(0)
+				.build();
+		return customerRepository.save(customer);
+	}
+
 }

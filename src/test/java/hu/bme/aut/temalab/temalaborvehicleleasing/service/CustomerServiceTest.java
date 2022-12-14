@@ -1,11 +1,14 @@
 package hu.bme.aut.temalab.temalaborvehicleleasing.service;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.time.LocalDate;
-
-import java.util.List;
-
+import hu.bme.aut.temalab.temalaborvehicleleasing.model.Bike;
+import hu.bme.aut.temalab.temalaborvehicleleasing.model.Car;
+import hu.bme.aut.temalab.temalaborvehicleleasing.model.Customer;
+import hu.bme.aut.temalab.temalaborvehicleleasing.model.Rental;
+import hu.bme.aut.temalab.temalaborvehicleleasing.model.enums.*;
+import hu.bme.aut.temalab.temalaborvehicleleasing.repository.CustomerRepository;
+import hu.bme.aut.temalab.temalaborvehicleleasing.repository.RentalRepository;
+import hu.bme.aut.temalab.temalaborvehicleleasing.repository.UserRepository;
+import hu.bme.aut.temalab.temalaborvehicleleasing.repository.VehicleRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,19 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import hu.bme.aut.temalab.temalaborvehicleleasing.model.Bike;
-import hu.bme.aut.temalab.temalaborvehicleleasing.model.Car;
-import hu.bme.aut.temalab.temalaborvehicleleasing.model.Customer;
-import hu.bme.aut.temalab.temalaborvehicleleasing.model.Rental;
-import hu.bme.aut.temalab.temalaborvehicleleasing.model.enums.BikeStrokeType;
-import hu.bme.aut.temalab.temalaborvehicleleasing.model.enums.CarBodyTypes;
-import hu.bme.aut.temalab.temalaborvehicleleasing.model.enums.FuelType;
-import hu.bme.aut.temalab.temalaborvehicleleasing.model.enums.GearboxType;
-import hu.bme.aut.temalab.temalaborvehicleleasing.model.enums.VehicleType;
-import hu.bme.aut.temalab.temalaborvehicleleasing.repository.CustomerRepository;
-import hu.bme.aut.temalab.temalaborvehicleleasing.repository.RentalRepository;
-import hu.bme.aut.temalab.temalaborvehicleleasing.repository.UserRepository;
-import hu.bme.aut.temalab.temalaborvehicleleasing.repository.VehicleRepository;
+import java.time.LocalDate;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -317,19 +312,19 @@ class CustomerServiceTest {
 	
 	
 	@Test
-	void findMostActiveCustomersTest() {		
-		
+	void findMostActiveCustomersTest() {
+
 		//Invalid parameter test
-		assertEquals(null, customerService.findMostActiveCustomers(-1));
-		assertEquals(null, customerService.findMostActiveCustomers(6));
-		
+		assertNull(customerService.findMostActiveCustomers(-1));
+		assertNull(customerService.findMostActiveCustomers(6));
+
 		List<Customer> mostActiveCustomers = List.copyOf(customerService.findMostActiveCustomers(1));
-		
+
 		assertEquals(1, mostActiveCustomers.size());
 		assertEquals(3, rentalRepository.findByCustomer(mostActiveCustomers.get(0)).size());
-		
+
 		mostActiveCustomers = List.copyOf(customerService.findMostActiveCustomers(2));
-		
+
 		assertEquals(3, mostActiveCustomers.size());
 		assertEquals(3, rentalRepository.findByCustomer(mostActiveCustomers.get(0)).size());
 		assertEquals(2, rentalRepository.findByCustomer(mostActiveCustomers.get(1)).size());

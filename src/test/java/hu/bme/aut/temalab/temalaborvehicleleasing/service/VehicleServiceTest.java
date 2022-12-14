@@ -37,6 +37,7 @@ class VehicleServiceTest {
 
     private Customer customer;
     private  Car car;
+    private Bike bike;
     private Rental rent;
 
     @BeforeEach
@@ -47,19 +48,19 @@ class VehicleServiceTest {
                 .licensePlate("ASD-123")
                 .seats(5)
                 .mileage(1544)
-                .mileageLimit(300)
+                .mileageLimit(30000)
                 .horsePower(900)
                 .gearBoxType(GearboxType.MANUAL)
                 .fuelType(FuelType.PETROL_PREMIUM)
                 .carBodyTypes(CarBodyTypes.COUPE)
                 .build();
-        Bike bike = Bike.builder()
+        bike = Bike.builder()
                 .vehicleType(VehicleType.BIKE)
                 .licensePlate("ZYZ-143")
                 .seats(2)
                 .mileage(13242)
                 .mileageLimit(300)
-                .horsePower(90)
+                .horsePower(900000)
                 .gearBoxType(GearboxType.MANUAL)
                 .fuelType(FuelType.PETROL)
                 .strokeType(BikeStrokeType.FOUR_STROKE)
@@ -97,7 +98,7 @@ class VehicleServiceTest {
                         .mileageLimit(200)
                         .horsePower(95)
                         .gearBoxType(GearboxType.MANUAL)
-                        .fuelType(FuelType.PETROL_PREMIUM)
+                        .fuelType(FuelType.PETROL)
                         .strokeType(BikeStrokeType.FOUR_STROKE)
                         .build()
         );
@@ -124,7 +125,7 @@ class VehicleServiceTest {
     @Test
     void averageMileageLimitOfVehicleType() {
         assertEquals(250, vehicleService.averageMileageLimitOfVehicleType(VehicleType.BIKE));
-        assertEquals(300, vehicleService.averageMileageLimitOfVehicleType(VehicleType.CAR));
+        assertEquals(30000, vehicleService.averageMileageLimitOfVehicleType(VehicleType.CAR));
         assertEquals(0, vehicleService.averageMileageLimitOfVehicleType(VehicleType.TRANSPORTER));
     }
 
@@ -139,6 +140,22 @@ class VehicleServiceTest {
     @Test
     void rentalRepositoryFindByVehicle(){
         ArrayList<Rental> rents = (ArrayList<Rental>) rentalRepository.findByVehicle(car);
-        assertEquals(rent.getId(),rents.get(0).getId());
+        assertEquals(rents.get(0).getId(),rent.getId());
+    }
+    @Test
+    void filterVehicleByFuelType(){
+        assertEquals(car.getId(),vehicleService.filterVehicleByFuelType(FuelType.PETROL_PREMIUM).get(0).getId());
+    }
+    @Test
+    void filterVehicleByFuelAndVehicleType(){
+        assertEquals(car.getId(),vehicleService.filterVehicleByFuelAndVehicleType(FuelType.PETROL_PREMIUM,VehicleType.CAR).get(0).getId());
+    }
+    @Test
+    void vehiclesSortedByMileLimit(){
+        assertEquals(car.getId(),vehicleService.vehiclesSortedByMileLimit().get(0).getId());
+    }
+    @Test
+    void superCars(){
+        assertEquals(bike.getId(),vehicleService.superCars().get(0).getId());
     }
 }
