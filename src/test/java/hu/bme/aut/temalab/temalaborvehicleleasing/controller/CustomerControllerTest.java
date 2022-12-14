@@ -1,13 +1,8 @@
 package hu.bme.aut.temalab.temalaborvehicleleasing.controller;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import hu.bme.aut.temalab.temalaborvehicleleasing.model.Customer;
+import hu.bme.aut.temalab.temalaborvehicleleasing.repository.CustomerRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +12,17 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import hu.bme.aut.temalab.temalaborvehicleleasing.model.Customer;
-import hu.bme.aut.temalab.temalaborvehicleleasing.repository.CustomerRepository;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(CustomerController.class)
 @AutoConfigureMockMvc(addFilters = false)
@@ -93,10 +92,10 @@ public class CustomerControllerTest {
 		
 		when(customerRepository.findAll()).thenReturn(customers);
 		
-		mockMvc.perform(get("/customers")).andExpect(status().isOk()).andExpect(jsonPath("$.size()").value(customers.size()));
+		mockMvc.perform(get("/customers/all")).andExpect(status().isOk()).andExpect(jsonPath("$.size()").value(customers.size()));
 	}
 	
-	/*
+
 	@Test
 	public void createCustomerTest() throws Exception {
 		
@@ -111,10 +110,10 @@ public class CustomerControllerTest {
 								.build();
 		
 		ObjectMapper objectMapper = new ObjectMapper();
-		
-		mockMvc.perform(post("/customers")
-					.contentType(MediaType.APPLICATION_JSON_UTF8)
-					.content(objectMapper.writeValueAsString(newCustomer)))
+
+		mockMvc.perform(post("/customers/save")
+						.contentType(MediaType.APPLICATION_JSON_UTF8)
+						.content(objectMapper.writeValueAsString(newCustomer)))
 					.andExpect(status().isOk())
 					.andExpect(jsonPath("$.firstName").value(newCustomer.getFirstName()))
 					.andExpect(jsonPath("$.lastName").value(newCustomer.getLastName()))
@@ -122,7 +121,7 @@ public class CustomerControllerTest {
 					.andExpect(jsonPath("$.password").value(newCustomer.getPassword()))
 					.andExpect(jsonPath("$.drivingLicenceNumber").value(newCustomer.getDrivingLicenceNumber()));
 	}
-	*/
+
 	
 	@Test
 	public void findCustomerById() throws Exception {
@@ -141,8 +140,8 @@ public class CustomerControllerTest {
 		
 		mockMvc.perform(get("/customers/b6a8669e-ee95-4c42-9ef6-4a9b61380164")).andExpect(status().isNotFound());
 	}
-	
-	/*
+
+
 	@Test
 	public void updateCustomersDataTest() throws Exception{
 		
@@ -158,10 +157,10 @@ public class CustomerControllerTest {
 		when(customerRepository.save(any(Customer.class))).thenReturn(updatedCustomer);
 		
 		ObjectMapper objectMapper = new ObjectMapper();
-		
-		mockMvc.perform(put("/customers/a6a8669e-ee95-4c42-9ef6-4a9b61380164")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(updatedCustomer)))
+
+		mockMvc.perform(post("/customers/a6a8669e-ee95-4c42-9ef6-4a9b61380164/update")
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(objectMapper.writeValueAsString(updatedCustomer)))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.firstName").value(updatedCustomer.getFirstName()))
 				.andExpect(jsonPath("$.lastName").value(updatedCustomer.getLastName()))
@@ -169,13 +168,13 @@ public class CustomerControllerTest {
 				.andExpect(jsonPath("$.password").value(updatedCustomer.getPassword()))
 				.andExpect(jsonPath("$.drivingLicenceNumber").value(updatedCustomer.getDrivingLicenceNumber()));
 	}
-	*/
-	
+
+
 	@Test
 	public void deleteCustomerTest() throws Exception {
 		
 		doNothing().when(customerRepository).deleteById(any());
-		
-		mockMvc.perform(delete("/customers/a6a8669e-ee95-4c42-9ef6-4a9b61380164")).andExpect(status().isNoContent());
+
+		mockMvc.perform(delete("/customers/a6a8669e-ee95-4c42-9ef6-4a9b61380164/delete")).andExpect(status().isNoContent());
 	}
 }

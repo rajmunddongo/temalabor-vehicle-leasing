@@ -3,7 +3,6 @@ package hu.bme.aut.temalab.temalaborvehicleleasing.controller;
 import hu.bme.aut.temalab.temalaborvehicleleasing.model.Customer;
 import hu.bme.aut.temalab.temalaborvehicleleasing.repository.CustomerRepository;
 import lombok.AllArgsConstructor;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +24,7 @@ public class CustomerController {
      *   
      * @return ResponseEntity containing the result list of customers (if the process was successful) and a HTTP status code
      */
-	@GetMapping("/customers")
+	@GetMapping("/customers/all")
     public ResponseEntity<List<Customer>> findAll(){
         List<Customer> allCustomers;
         
@@ -45,7 +44,7 @@ public class CustomerController {
      * @param newCustomer the new customer that should be saved
      * @return ResponseEntity containing the freshly added customer (if the process was successful) and a HTTP status code
      */
-	@PostMapping("/customers")
+	@PostMapping("/customers/save")
     public ResponseEntity<Customer> createCustomer(@RequestBody Customer newCustomer){
     	Customer customer;
     	
@@ -86,7 +85,7 @@ public class CustomerController {
      * @param id the ID of the customer whose data needs to be changed
      * @return ResponseEntity containing the updated customer (if the process was successful) and a HTTP status code
      */
-	@PutMapping("/customers/{id}")
+	@PostMapping("/customers/{id}/update")
     public ResponseEntity<Customer> updateCustomersData(@RequestBody Customer newCustomer, @PathVariable UUID id){
         
     	Optional<Customer> oldCustomer;
@@ -119,7 +118,7 @@ public class CustomerController {
      * @param id identifies the customer that have to be deleted
      * @return ResponseEntity containing a HTTP status code indicating the process's result
      */
-	@DeleteMapping("/customers/{id}")
+	@DeleteMapping("/customers/{id}/delete")
     public ResponseEntity<HttpStatus> deleteCustomer(@PathVariable UUID id){
         
     	try {
