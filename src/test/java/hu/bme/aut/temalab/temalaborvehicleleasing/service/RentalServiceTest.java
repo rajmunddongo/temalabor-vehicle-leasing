@@ -30,8 +30,10 @@ class RentalServiceTest {
 
     @Autowired
     private RentalService rentalService;
+    
     @Autowired
     private VehicleRepository vehicleRepository;
+    
     @Autowired
     private CustomerRepository customerRepository;
 
@@ -44,7 +46,8 @@ class RentalServiceTest {
     @BeforeEach
     @Transactional
     void setUp() {
-        customer1 = customerRepository.save(Customer.builder()
+       
+    	customer1 = customerRepository.save(Customer.builder()
                 .firstName("Bob")
                 .lastName("Bob")
                 .username("bob")
@@ -98,7 +101,7 @@ class RentalServiceTest {
                 .customer(customerRepository.findById(customer1).get())
                 .vehicle(vehicleRepository.findById(bike).get())
                 .build()).getId();
-
+        
         rentalRepository.save(Rental.builder()
                 .price(2000)
                 .startDate(LocalDate.of(2022, Calendar.SEPTEMBER, 10))
@@ -107,7 +110,7 @@ class RentalServiceTest {
                 .customer(customerRepository.findById(customer2).get())
                 .vehicle(vehicleRepository.findById(car).get())
                 .build()).getId();
-
+        
         rentalRepository.save(Rental.builder()
                 .price(1000)
                 .startDate(LocalDate.of(2022, Calendar.AUGUST, 10))
@@ -120,36 +123,44 @@ class RentalServiceTest {
 
     @AfterEach
     void tearDown() {
-        rentalRepository.deleteAll();
+        
+    	rentalRepository.deleteAll();
         vehicleRepository.deleteAll();
         customerRepository.deleteAll();
     }
 
     @Test
     void mostRentalCarsIDList() {
-        List<Vehicle> mostRentalCars = rentalService.vehiclesOrderedByRentals();
-        Iterator<Vehicle> iterator = mostRentalCars.iterator();
-        assertEquals(car, iterator.next().getId());
+        
+    	List<Vehicle> mostRentalCars = rentalService.vehiclesOrderedByRentals();
+        
+    	Iterator<Vehicle> iterator = mostRentalCars.iterator();
+        
+    	assertEquals(car, iterator.next().getId());
         assertEquals(bike, iterator.next().getId());
         assertEquals(2, mostRentalCars.size());
     }
 
     @Test
     void totalSpending() {
-        assertEquals(1000, rentalService.totalSpending(customerRepository.findById(customer1).get()));
+        
+    	assertEquals(1000, rentalService.totalSpending(customerRepository.findById(customer1).get()));
         assertEquals(3000, rentalService.totalSpending(customerRepository.findById(customer2).get()));
         assertEquals(0, rentalService.totalSpending(customerRepository.findById(customer3).get()));
     }
 
     @Test
     void totalLengthKm() {
-        assertEquals(50, rentalService.totalLengthKm(customerRepository.findById(customer1).get()));
+        
+    	assertEquals(50, rentalService.totalLengthKm(customerRepository.findById(customer1).get()));
         assertEquals(205, rentalService.totalLengthKm(customerRepository.findById(customer2).get()));
         assertEquals(0, rentalService.totalLengthKm(customerRepository.findById(customer3).get()));
     }
+    
     @Test
     void totalSpendingAfterDateTest(){
-        assertEquals(2000, rentalService.totalSpendingAfterDate(customerRepository.findById(customer2).get(), LocalDate.of(2022, Calendar.SEPTEMBER, 8)));
+        
+    	assertEquals(2000, rentalService.totalSpendingAfterDate(customerRepository.findById(customer2).get(), LocalDate.of(2022, Calendar.SEPTEMBER, 8)));
         assertEquals(0, rentalService.totalSpendingAfterDate(customerRepository.findById(customer2).get(), LocalDate.of(2022, Calendar.DECEMBER, 8)));
     }
 }

@@ -15,7 +15,8 @@ import java.util.UUID;
 @RestController
 @AllArgsConstructor
 public class RentalController {
-    @Autowired
+    
+	@Autowired
     private RentalRepository rentalRepository;
 
     /**
@@ -25,7 +26,8 @@ public class RentalController {
      */
     @GetMapping("/rentals")
     public ResponseEntity<List<Rental>> getAll() {
-        List<Rental> allCustomers;
+        
+    	List<Rental> allCustomers;
         try {
             allCustomers = rentalRepository.findAll();
 
@@ -43,7 +45,9 @@ public class RentalController {
      */
     @PostMapping("/rentals/save")
     public ResponseEntity<Rental> newRental(@RequestBody Rental newRental) {
-        Rental rental;
+        
+    	Rental rental;
+    	
         try {
             rental = rentalRepository.save(newRental);
 
@@ -61,7 +65,8 @@ public class RentalController {
      */
     @GetMapping("/rentals/{id}")
     public ResponseEntity<Optional<Rental>> one(@PathVariable UUID id) {
-        Optional<Rental> rental;
+       
+    	Optional<Rental> rental;
 
         try {
             rental = rentalRepository.findById(id);
@@ -80,12 +85,13 @@ public class RentalController {
      * Updates an already present rental's data
      *
      * @param newRental Rental object that contains the new data
-     * @param id        the ID of the rental whose data needs to be changed
+     * @param id the ID of the rental whose data needs to be changed
      * @return ResponseEntity containing the updated rental (if the process was successful) and an HTTP status code
      */
     @PostMapping("/rentals/{id}/update")
     public ResponseEntity<Rental> replaceRental(@RequestBody Rental newRental, @PathVariable UUID id) {
-        Optional<Rental> oldRental;
+        
+    	Optional<Rental> oldRental;
         try {
             oldRental = rentalRepository.findById(id);
             if(oldRental.isPresent()){
@@ -110,12 +116,12 @@ public class RentalController {
      */
     @DeleteMapping("/rentals/{id}/delete")
     public ResponseEntity<HttpStatus> deleteRental(@PathVariable UUID id) {
-        try {
+        
+    	try {
             rentalRepository.deleteById(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 }

@@ -19,14 +19,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest
 @ActiveProfiles("test")
 public class UserDetailsServiceImplTest {
-    @Autowired
+    
+	@Autowired
     private UserRepository userRepository;
-    @Autowired
+    
+	@Autowired
     private UserDetailsServiceImpl udsi;
 
     @BeforeEach
     void setUp() {
-        userRepository.save(
+       
+    	userRepository.save(
                 Customer.builder()
                         .firstName("Got")
                         .lastName("You")
@@ -40,21 +43,27 @@ public class UserDetailsServiceImplTest {
 
     @AfterEach
     void tearDown() {
-        userRepository.deleteAll();
+        
+    	userRepository.deleteAll();
     }
 
     @Test
-    void sserDetailsServiceImplTest() {
-        UserDetails user = udsi.loadUserByUsername("gotcha");
-        assertTrue(user.getAuthorities().contains(UserRole.ROLE_CUSTOMER));
+    void userDetailsServiceImplTest() {
+        
+    	UserDetails user = udsi.loadUserByUsername("gotcha");
+        
+    	assertTrue(user.getAuthorities().contains(UserRole.ROLE_CUSTOMER));
         assertTrue(user.getPassword().contains("getthis"));
 
     }
 
     @Test
     void usernameIsEmptyTest() {
-        Executable executable = () -> udsi.loadUserByUsername("InvalidUserName");
-        Exception exception = assertThrows(UsernameNotFoundException.class, executable);
-        assertTrue(exception.getMessage().contains("User not found!"));
+        
+    	Executable executable = () -> udsi.loadUserByUsername("InvalidUserName");
+        
+    	Exception exception = assertThrows(UsernameNotFoundException.class, executable);
+        
+    	assertTrue(exception.getMessage().contains("User not found!"));
     }
 }

@@ -27,13 +27,16 @@ public class VehicleCarTest {
 
     @Test
     void testMethodCall() {
-        vehicleService.averageSeatsOfVehicleType(VehicleType.CAR);
-        verify(vehicleRepository,Mockito.times(1)).findByVehicleType(VehicleType.CAR);
+        
+    	vehicleService.averageSeatsOfVehicleType(VehicleType.CAR);
+        
+    	verify(vehicleRepository,Mockito.times(1)).findByVehicleType(VehicleType.CAR);
     }
     
     @Test
     void testThrow() {
-        try {
+        
+    	try {
             Mockito.when(vehicleRepository.findByVehicleType(VehicleType.valueOf("THROWME")))
                     .thenThrow(IllegalArgumentException.class);
         }catch(IllegalArgumentException e ){

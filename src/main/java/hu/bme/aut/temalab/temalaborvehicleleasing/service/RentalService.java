@@ -18,7 +18,8 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class RentalService {
-    private final RentalRepository rentalRepository;
+    
+	private final RentalRepository rentalRepository;
 
     /**
      * Calculate the number of rentals by vehicles
@@ -27,7 +28,8 @@ public class RentalService {
      */
     @Transactional(readOnly = true)
     public List<Vehicle> vehiclesOrderedByRentals() {
-        // Calculate the number of rentals by vehicles
+        
+    	// Calculate the number of rentals by vehicles
         Map<Vehicle, Long> vehicleRentalCountMap = rentalRepository.findAll().stream()
                 .collect(Collectors.groupingBy(Rental::getVehicle, Collectors.counting()));
 
@@ -45,7 +47,8 @@ public class RentalService {
      * @return total spending
      */
     public Integer totalSpending(@NonNull Customer customer) {
-        return rentalRepository.findByCustomer(customer).stream().mapToInt(Rental::getPrice).sum();
+       
+    	return rentalRepository.findByCustomer(customer).stream().mapToInt(Rental::getPrice).sum();
     }
 
     /**
@@ -55,8 +58,10 @@ public class RentalService {
      * @return total kilometers
      */
     public Integer totalLengthKm(@NonNull Customer customer) {
-        return rentalRepository.findByCustomer(customer).stream().mapToInt(Rental::getUseKm).sum();
+        
+    	return rentalRepository.findByCustomer(customer).stream().mapToInt(Rental::getUseKm).sum();
     }
+    
     /**
      * Calculates the total spend of a customer after a Date
      * The date refers to the start of the rental
@@ -66,6 +71,7 @@ public class RentalService {
      * @return total spending
      */
     public int totalSpendingAfterDate(Customer customer, LocalDate of) {
-        return rentalRepository.findByCustomer(customer).stream().filter(rental -> rental.getStartDate().isAfter(of)).mapToInt(Rental::getPrice).sum();
+        
+    	return rentalRepository.findByCustomer(customer).stream().filter(rental -> rental.getStartDate().isAfter(of)).mapToInt(Rental::getPrice).sum();
     }
 }

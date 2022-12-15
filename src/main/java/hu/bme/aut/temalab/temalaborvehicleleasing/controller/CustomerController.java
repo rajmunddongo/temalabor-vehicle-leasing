@@ -81,7 +81,7 @@ public class CustomerController {
     }
 
     /**
-     * Updates an already present customers's data
+     * Updates an already present customer's data
      *
      * @param newCustomer Customer object that contains the new data
      * @param id          the ID of the customer whose data needs to be changed
