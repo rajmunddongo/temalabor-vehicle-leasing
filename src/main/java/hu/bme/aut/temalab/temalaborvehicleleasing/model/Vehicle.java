@@ -18,7 +18,8 @@ import java.util.UUID;
 @Entity
 @SuperBuilder
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "@class")
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
+
 public abstract class Vehicle {
     @Id
     @GeneratedValue
