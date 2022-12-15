@@ -44,8 +44,10 @@ public class VehicleControllerTest {
 
     @BeforeEach
     void SetUp(){
-        vehicleList= new ArrayList<>();
-        vehicleList.add(Car.builder()
+        
+    	vehicleList= new ArrayList<>();
+        
+    	vehicleList.add(Car.builder()
                 .vehicleType(VehicleType.CAR)
                 .licensePlate("ASD-123")
                 .seats(5)
@@ -57,6 +59,7 @@ public class VehicleControllerTest {
                 .fuelType(FuelType.PETROL_PREMIUM)
                 .carBodyTypes(CarBodyTypes.COUPE)
                 .build());
+    	
         vehicleList.add(Car.builder()
                 .vehicleType(VehicleType.CAR)
                 .licensePlate("BUGatti")
@@ -69,6 +72,7 @@ public class VehicleControllerTest {
                 .fuelType(FuelType.PETROL_PREMIUM)
                 .carBodyTypes(CarBodyTypes.COUPE)
                 .build());
+        
         vehicleList.add(Car.builder()
                 .vehicleType(VehicleType.CAR)
                 .licensePlate("ABB-133")
@@ -85,14 +89,17 @@ public class VehicleControllerTest {
 
     @Test
     public void findall() throws Exception {
-        when(vehicleRepository.findAll()).thenReturn(vehicleList);
+       
+    	when(vehicleRepository.findAll()).thenReturn(vehicleList);
 
         mockMvc.perform(get("/vehicles/all")).andExpect(status().isOk()).andExpect(jsonPath("$.size()").value(vehicleList.size()));
     }
     @Test
     public void createVehicleTest() throws  Exception{
-        when(vehicleRepository.save(any(Vehicle.class))).thenAnswer((invocation) -> invocation.getArgument(0));
-        Vehicle newVehicle = Car.builder()
+       
+    	when(vehicleRepository.save(any(Vehicle.class))).thenAnswer((invocation) -> invocation.getArgument(0));
+        
+    	Vehicle newVehicle = Car.builder()
                 .vehicleType(VehicleType.CAR)
                 .licensePlate("ASD-123")
                 .seats(5)
@@ -103,7 +110,9 @@ public class VehicleControllerTest {
                 .fuelType(FuelType.PETROL_PREMIUM)
                 .carBodyTypes(CarBodyTypes.COUPE)
                 .build();
+    	
         ObjectMapper objectMapper = new ObjectMapper();
+        
         mockMvc.perform(post("/vehicles/save")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(newVehicle)))
@@ -111,16 +120,21 @@ public class VehicleControllerTest {
     }
     @Test
     public void findVehicleByIdTest() throws Exception{
-        when(vehicleRepository.findById(UUID.fromString("e6a8669e-ee95-4c42-9ef6-4a9b61380164"))).thenReturn(Optional.of(vehicleList.get(1)));
-        mockMvc.perform(get("/vehicles/e6a8669e-ee95-4c42-9ef6-4a9b61380164"))
+        
+    	when(vehicleRepository.findById(UUID.fromString("e6a8669e-ee95-4c42-9ef6-4a9b61380164"))).thenReturn(Optional.of(vehicleList.get(1)));
+        
+    	mockMvc.perform(get("/vehicles/e6a8669e-ee95-4c42-9ef6-4a9b61380164"))
                 .andExpect(status().isOk());
+    	
         when(vehicleRepository.findById(UUID.fromString("b6a8669e-ee95-4c42-9ef6-4a9b61380164"))).thenReturn(Optional.empty());
+        
         mockMvc.perform(get("/vehicles/b6a8669e-ee95-4c42-9ef6-4a9b6128016")).andExpect(status().isNotFound());
 
     }
     @Test
     public void updateVehicleTest() throws Exception{
-        Vehicle newVehicle = Car.builder()
+       
+    	Vehicle newVehicle = Car.builder()
                 .vehicleType(VehicleType.CAR)
                 .licensePlate("FFF-123")
                 .seats(3)
@@ -136,6 +150,7 @@ public class VehicleControllerTest {
         when(vehicleRepository.save(any(Vehicle.class))).thenReturn(newVehicle);
 
         ObjectMapper objectMapper = new ObjectMapper();
+        
         mockMvc.perform(post("/vehicles/a6a8669e-ee95-4c42-9ef6-4a9b61380164/update")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(newVehicle)))
@@ -143,10 +158,9 @@ public class VehicleControllerTest {
     }
     @Test
     public void deleteVehicleTest() throws Exception{
-        doNothing().when(vehicleRepository).deleteById(any());
-        mockMvc.perform(delete("/vehicles/a6a8669e-ee95-4c42-9ef6-4a9b61380164/delete")).andExpect(status().isNoContent());
+        
+    	doNothing().when(vehicleRepository).deleteById(any());
+        
+    	mockMvc.perform(delete("/vehicles/a6a8669e-ee95-4c42-9ef6-4a9b61380164/delete")).andExpect(status().isNoContent());
     }
-
-
-
 }

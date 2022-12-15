@@ -10,13 +10,15 @@ import java.util.Collection;
 import java.util.UUID;
 
 public interface RentalRepository extends JpaRepository<Rental, UUID> {
-    /**
+    
+	/**
      * Finds a rentals by a vehicle in the database
      *
      * @param vehicle by searching the rental
      * @return an empty or a filled Collection<Rental> according to the process's result
      */
     Collection<Rental> findByVehicle(@NonNull Vehicle vehicle);
+    
     /**
      * Finds a rentals by a customer in the database
      *

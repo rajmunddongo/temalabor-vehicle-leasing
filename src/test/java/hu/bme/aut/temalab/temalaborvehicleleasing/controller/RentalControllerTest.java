@@ -29,7 +29,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(RentalController.class)
 @AutoConfigureMockMvc(addFilters = false)
 public class RentalControllerTest {
-    @Autowired
+  
+	@Autowired
     private MockMvc mockMvc;
 
     @MockBean
@@ -39,8 +40,10 @@ public class RentalControllerTest {
 
     @BeforeEach
     void setUp() {
-        rentals = new ArrayList<>();
-        rentals.add(Rental.builder()
+       
+    	rentals = new ArrayList<>();
+        
+    	rentals.add(Rental.builder()
                 .price(1000)
                 .startDate(LocalDate.of(2022, Calendar.OCTOBER, 10))
                 .endDate(LocalDate.of(2022, Calendar.OCTOBER, 25))
@@ -48,6 +51,7 @@ public class RentalControllerTest {
                 .customer(new Customer())
                 .vehicle(new Bike())
                 .build());
+    	
         rentals.add(Rental.builder()
                 .price(1000)
                 .startDate(LocalDate.of(2021, Calendar.OCTOBER, 10))
@@ -56,6 +60,7 @@ public class RentalControllerTest {
                 .customer(new Customer())
                 .vehicle(new Bike())
                 .build());
+        
         rentals.add(Rental.builder()
                 .price(1000)
                 .startDate(LocalDate.of(2000, Calendar.OCTOBER, 10))
@@ -68,34 +73,43 @@ public class RentalControllerTest {
 
     @Test
     public void findAllTest() throws Exception {
-        when(rentalRepository.findAll()).thenReturn(rentals);
-        mockMvc.perform(get("/rentals")).andExpect(status().isOk()).andExpect(jsonPath("$.size()").value(rentals.size()));
+        
+    	when(rentalRepository.findAll()).thenReturn(rentals);
+        
+    	mockMvc.perform(get("/rentals")).andExpect(status().isOk()).andExpect(jsonPath("$.size()").value(rentals.size()));
     }
 
 
 
     @Test
     public void findCustomerById() throws Exception {
-        when(rentalRepository.findById(UUID.fromString("a1a8629e-ee35-4c42-9ef6-4a2b61381164"))).thenReturn(Optional.of(rentals.get(1)));
-        mockMvc.perform(get("/rentals/a1a8629e-ee35-4c42-9ef6-4a2b61381164"))
+       
+    	when(rentalRepository.findById(UUID.fromString("a1a8629e-ee35-4c42-9ef6-4a2b61381164"))).thenReturn(Optional.of(rentals.get(1)));
+        
+    	mockMvc.perform(get("/rentals/a1a8629e-ee35-4c42-9ef6-4a2b61381164"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.price").value(rentals.get(1).getPrice()))
                 .andExpect(jsonPath("$.useKm").value(rentals.get(1).getUseKm()));
 
         when(rentalRepository.findById(UUID.fromString("b6a8669e-ee95-4c42-9ef6-4a9b61380164"))).thenReturn(Optional.empty());
+        
         mockMvc.perform(get("/rentals/b6a8669e-ee95-4c42-9ef6-4a9b61380164")).andExpect(status().isNotFound());
     }
 
     @Test
     public void deleteById() throws Exception {
-        doNothing().when(rentalRepository).deleteById(any());
-        mockMvc.perform(delete("/rentals/a1a8629e-ee35-4c42-9ef6-4a2b61381164/delete")).andExpect(status().isNoContent());
+       
+    	doNothing().when(rentalRepository).deleteById(any());
+        
+    	mockMvc.perform(delete("/rentals/a1a8629e-ee35-4c42-9ef6-4a2b61381164/delete")).andExpect(status().isNoContent());
     }
 
     @Test
     public void createNewRental() throws Exception {
-        when(rentalRepository.save(any(Rental.class))).thenAnswer((invocation) -> invocation.getArgument(0));
-        Rental newRental = Rental.builder()
+        
+    	when(rentalRepository.save(any(Rental.class))).thenAnswer((invocation) -> invocation.getArgument(0));
+        
+    	Rental newRental = Rental.builder()
                 .price(1000)
                 .startDate(LocalDate.of(2022, Calendar.AUGUST, 10))
                 .endDate(LocalDate.of(2022, Calendar.AUGUST, 25))
@@ -103,8 +117,10 @@ public class RentalControllerTest {
                 .customer(new Customer())
                 .vehicle(new Bike())
                 .build();
-        ObjectMapper objectMapper = new ObjectMapper();
+        
+    	ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
+        
         mockMvc.perform(post("/rentals/save")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(newRental)))
@@ -115,7 +131,8 @@ public class RentalControllerTest {
 
     @Test
     public void replaceRentalTest() throws Exception {
-        Rental updatedRental = Rental.builder()
+        
+    	Rental updatedRental = Rental.builder()
                 .price(10000)
                 .startDate(LocalDate.of(2022, Calendar.OCTOBER, 10))
                 .endDate(LocalDate.of(2022, Calendar.OCTOBER, 25))
@@ -123,10 +140,13 @@ public class RentalControllerTest {
                 .customer(new Customer())
                 .vehicle(new Bike())
                 .build();
+    	
         when(rentalRepository.findById(UUID.fromString("a6a8669e-ee95-4c42-9ef6-4a9b61380164"))).thenReturn(Optional.of(rentals.get(2)));
         when(rentalRepository.save(any(Rental.class))).thenReturn(updatedRental);
+        
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
+        
         mockMvc.perform(post("/rentals/a6a8669e-ee95-4c42-9ef6-4a9b61380164/update")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updatedRental)))

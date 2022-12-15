@@ -11,8 +11,36 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface VehicleRepository extends JpaRepository<Vehicle, UUID> {
-    Collection<Vehicle> findByVehicleType(@NonNull VehicleType vehicleType);
-    Collection<Vehicle> findByFuelType(@NonNull FuelType fuelType);
-    Optional<Vehicle> findById(UUID id);
-    Optional<Vehicle> findByLicensePlate(String licensePlate);
+    
+	/**
+	 * Finds all vehicles in the database with a given type
+	 * 
+	 * @param vehicleType the desired type of the vehicles
+	 * @return a collection of the found vehicles which have the same type
+	 */
+	Collection<Vehicle> findByVehicleType(@NonNull VehicleType vehicleType);
+    
+	/**
+	 * Finds all vehicles in the database with a given fuel type
+	 * 
+	 * @param fuelType the desired type of the fuel
+	 * @return a collection of the found vehicles which have the same fuel type
+	 */
+	Collection<Vehicle> findByFuelType(@NonNull FuelType fuelType);
+    
+	/**
+	 * Finds a vehicle in the database with a given ID
+	 * 
+	 * @param id the desired ID
+	 * @return an empty or a filled Optional (containing the found vehicle) according to the process's result
+	 */
+	Optional<Vehicle> findById(UUID id);
+    
+	/**
+	 * Finds a vehicle in the database with a given license plate number
+	 * 
+	 * @param licensePlate the desired license plate number
+	 * @return an empty or a filled Optional (containing the found vehicle) according to the process's result
+	 */
+	Optional<Vehicle> findByLicensePlate(String licensePlate);
 }
