@@ -1,8 +1,11 @@
 package hu.bme.aut.temalab.temalaborvehicleleasing.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hu.bme.aut.temalab.temalaborvehicleleasing.controller.model.CreateCustomer;
 import hu.bme.aut.temalab.temalaborvehicleleasing.model.Customer;
 import hu.bme.aut.temalab.temalaborvehicleleasing.repository.CustomerRepository;
+import hu.bme.aut.temalab.temalaborvehicleleasing.repository.RentalRepository;
+import hu.bme.aut.temalab.temalaborvehicleleasing.service.CustomerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
