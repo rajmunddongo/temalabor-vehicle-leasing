@@ -20,7 +20,6 @@ public class CustomerController {
     private final CustomerRepository customerRepository;
     private final CustomerService customerService;
 
-
     /**
      * Gives back all the customers present in the database
      *
@@ -28,7 +27,8 @@ public class CustomerController {
      */
     @GetMapping("/customers/all")
     public ResponseEntity<List<Customer>> findAll() {
-        List<Customer> allCustomers;
+        
+    	List<Customer> allCustomers;
 
         try {
             allCustomers = customerRepository.findAll();
@@ -48,7 +48,8 @@ public class CustomerController {
      */
     @PostMapping("/customers/save")
     public ResponseEntity<Customer> createCustomer(@RequestBody CreateCustomer createCustomer) {
-        try {
+        
+    	try {
             return new ResponseEntity<>(customerService.createCustomer(createCustomer), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -63,7 +64,8 @@ public class CustomerController {
      */
     @GetMapping("/customers/{id}")
     public ResponseEntity<Optional<Customer>> findCustomerById(@PathVariable UUID id) {
-        Optional<Customer> customer;
+        
+    	Optional<Customer> customer;
 
         try {
             customer = customerRepository.findById(id);

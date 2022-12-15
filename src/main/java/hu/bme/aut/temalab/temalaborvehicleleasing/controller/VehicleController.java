@@ -1,7 +1,5 @@
 package hu.bme.aut.temalab.temalaborvehicleleasing.controller;
 
-
-import hu.bme.aut.temalab.temalaborvehicleleasing.model.Customer;
 import hu.bme.aut.temalab.temalaborvehicleleasing.model.Vehicle;
 import hu.bme.aut.temalab.temalaborvehicleleasing.repository.VehicleRepository;
 import lombok.AllArgsConstructor;

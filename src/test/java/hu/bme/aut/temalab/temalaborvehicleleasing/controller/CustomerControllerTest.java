@@ -36,8 +36,10 @@ public class CustomerControllerTest {
 
     @MockBean
     private CustomerRepository customerRepository;
+    
     @MockBean
     private RentalRepository rentalRepository;
+    
     @MockBean
     private CustomerService customerService;
 
@@ -45,7 +47,8 @@ public class CustomerControllerTest {
 
     @BeforeEach
     void setUp() {
-        customers = new ArrayList<>();
+        
+    	customers = new ArrayList<>();
 
         customers.add(Customer.builder()
                 .id(UUID.fromString("c6a8669e-ee95-4c42-9ef6-4a9b61380164"))
@@ -104,8 +107,10 @@ public class CustomerControllerTest {
 
     @Test
     public void createCustomerTest() throws Exception {
-        CustomerService cs = new CustomerService(customerRepository, rentalRepository);
-        when(customerRepository.save(any(Customer.class))).then(invocation -> invocation.getArgument(0, Customer.class));
+        
+    	CustomerService cs = new CustomerService(customerRepository, rentalRepository);
+        
+    	when(customerRepository.save(any(Customer.class))).then(invocation -> invocation.getArgument(0, Customer.class));
         when(customerService.createCustomer(any(CreateCustomer.class))).then(invocation -> cs.createCustomer(invocation.getArgument(0, CreateCustomer.class)));
 
         String json = "{\n" +
@@ -117,7 +122,7 @@ public class CustomerControllerTest {
                 "}";
 
         mockMvc.perform(post("/customers/save")
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName").value("Ádám"))
@@ -126,7 +131,6 @@ public class CustomerControllerTest {
                 .andExpect(jsonPath("$.password").value("0000"))
                 .andExpect(jsonPath("$.drivingLicenceNumber").value("NNNNNNNN"));
     }
-
 
     @Test
     public void findCustomerById() throws Exception {
@@ -145,7 +149,6 @@ public class CustomerControllerTest {
 
         mockMvc.perform(get("/customers/b6a8669e-ee95-4c42-9ef6-4a9b61380164")).andExpect(status().isNotFound());
     }
-
 
     @Test
     public void updateCustomersDataTest() throws Exception {
@@ -173,7 +176,6 @@ public class CustomerControllerTest {
                 .andExpect(jsonPath("$.password").value(updatedCustomer.getPassword()))
                 .andExpect(jsonPath("$.drivingLicenceNumber").value(updatedCustomer.getDrivingLicenceNumber()));
     }
-
 
     @Test
     public void deleteCustomerTest() throws Exception {

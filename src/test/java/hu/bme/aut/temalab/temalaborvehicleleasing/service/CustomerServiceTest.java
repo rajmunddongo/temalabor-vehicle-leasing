@@ -43,6 +43,7 @@ class CustomerServiceTest {
 	
 	@BeforeEach
 	void setUp() {
+		
 		//Create 5 users
 		userRepository.save(
 				Customer.builder()
@@ -299,17 +300,16 @@ class CustomerServiceTest {
         				.price(500)
         				.useKm(1000)
         				.build()
-        );
-        
+        );   
 	}
 	
 	@AfterEach
 	void tearDown() {
+		
 		rentalRepository.deleteAll();
 		userRepository.deleteAll();
 		vehicleRepository.deleteAll();
 	}
-	
 	
 	@Test
 	void findMostActiveCustomersTest() {
@@ -347,6 +347,5 @@ class CustomerServiceTest {
 		assertEquals(Integer.MAX_VALUE, activeCustomers.get(0).getBonusPoints());
 		assertEquals(Integer.MAX_VALUE, activeCustomers.get(1).getBonusPoints());
 		assertEquals(Integer.MAX_VALUE, activeCustomers.get(2).getBonusPoints());
-	}
-	
+	}	
 }

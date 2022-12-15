@@ -15,6 +15,7 @@ import java.util.*;
 @Service
 @AllArgsConstructor
 public class CustomerService {
+	
 	private final CustomerRepository customerRepository;
 	private final RentalRepository rentalRepository;
 
@@ -25,6 +26,7 @@ public class CustomerService {
 	 * @return collection of active customers
 	 */
 	public Collection<Customer> findMostActiveCustomers(int topHowMany) {
+		
 		//Parameter check
 		if(topHowMany <= 0 || topHowMany > customerRepository.findAll().size()) return null;
 		
@@ -60,6 +62,7 @@ public class CustomerService {
 	 * @param topHowMany number of most active customers
 	 */
 	public void giveOutBonusPoints(int amount, int topHowMany) {
+		
 		//Parameter check
 		if(amount <= 0 || topHowMany <=0 || topHowMany > customerRepository.findAll().size()) return;
 		
@@ -101,7 +104,14 @@ public class CustomerService {
 		return inactiveCustomers;
 	}
 
+	/**
+	 * Creates a customer from the given parameter and saves the result to the database
+	 * 
+	 * @param createCustomer this object contains the source data for the new customer
+	 * @return the freshly created customer
+	 */
 	public Customer createCustomer(CreateCustomer createCustomer) {
+		
 		Customer customer = Customer.builder()
 				.username(createCustomer.getUsername())
 				.firstName(createCustomer.getFirstName())
@@ -112,5 +122,4 @@ public class CustomerService {
 				.build();
 		return customerRepository.save(customer);
 	}
-
 }
