@@ -89,7 +89,7 @@ public class VehicleControllerTest {
     public void findall() throws Exception {
         when(vehicleRepository.findAll()).thenReturn(vehicleList);
 
-        mockMvc.perform(get("/vehicles")).andExpect(status().isOk()).andExpect(jsonPath("$.size()").value(vehicleList.size()));
+        mockMvc.perform(get("/vehicles/all")).andExpect(status().isOk()).andExpect(jsonPath("$.size()").value(vehicleList.size()));
     }
     @Test
     public void createVehicleTest() throws  Exception{
@@ -106,7 +106,7 @@ public class VehicleControllerTest {
                 .carBodyTypes(CarBodyTypes.COUPE)
                 .build();
         ObjectMapper objectMapper = new ObjectMapper();
-        mockMvc.perform(post("/vehicles")
+        mockMvc.perform(post("/vehicles/save")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(objectMapper.writeValueAsString(newVehicle)))
                 .andExpect(status().isOk());
@@ -138,7 +138,7 @@ public class VehicleControllerTest {
         when(vehicleRepository.save(any(Vehicle.class))).thenReturn(newVehicle);
 
         ObjectMapper objectMapper = new ObjectMapper();
-        mockMvc.perform(post("/vehicles/a6a8669e-ee95-4c42-9ef6-4a9b61380164")
+        mockMvc.perform(post("/vehicles/a6a8669e-ee95-4c42-9ef6-4a9b61380164/update")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(newVehicle)))
                 .andExpect(status().isOk());
@@ -146,7 +146,7 @@ public class VehicleControllerTest {
     @Test
     public void deleteVehicleTest() throws Exception{
         doNothing().when(vehicleRepository).deleteById(any());
-        mockMvc.perform(delete("/vehicles/a6a8669e-ee95-4c42-9ef6-4a9b61380164")).andExpect(status().isNoContent());
+        mockMvc.perform(delete("/vehicles/a6a8669e-ee95-4c42-9ef6-4a9b61380164/delete")).andExpect(status().isNoContent());
     }
 
 

@@ -21,7 +21,7 @@ public class VehicleController {
     @Autowired
     private final VehicleRepository vehicleRepository;
 
-    @GetMapping("/vehicles")
+    @GetMapping("/vehicles/all")
     ResponseEntity<List<Vehicle>> all(){
         try{
             return new ResponseEntity<>(vehicleRepository.findAll(), HttpStatus.OK);
@@ -29,7 +29,7 @@ public class VehicleController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @PostMapping("/vehicles")
+    @PostMapping("/vehicles/save")
     ResponseEntity<Vehicle> newEmployee(@RequestBody Vehicle vehicle){
         try {
             return new ResponseEntity<>(vehicleRepository.save(vehicle), HttpStatus.OK);
@@ -46,7 +46,7 @@ public class VehicleController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @PostMapping("/vehicles/{id}")
+    @PostMapping("/vehicles/{id}/update")
     ResponseEntity<Vehicle> replaceVehicle(@RequestBody Vehicle newVehicle,@PathVariable UUID id) {
         try {
             Optional<Vehicle> Vehicle = vehicleRepository.findById(id);
@@ -67,7 +67,7 @@ public class VehicleController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @DeleteMapping("/vehicles/{id}")
+    @DeleteMapping("/vehicles/{id}/delete")
     ResponseEntity<HttpStatus> deleteVehicle(@PathVariable UUID id) {
         try {
             vehicleRepository.deleteById(id);
